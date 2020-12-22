@@ -1,0 +1,51 @@
+{
+  "name": "baedangmoa",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start:client": "snowpack dev",
+    "start:server": "NODE_ENV=development nodemon",
+    "start": "run-p start:client start:server",
+    "generate": "graphql-codegen --config src/frontend/graphql/codegen.yaml -r dotenv/config",
+    "build:client": "snowpack build",
+    "build:server": "tsc --project tsconfig.api.json",
+    "build": "rm -rf build api && run-p build:client build:server"
+  },
+  "author": "Haejoon Kim",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.12.7",
+    "@graphql-codegen/cli": "^1.19.4",
+    "@graphql-codegen/typescript": "^1.19.0",
+    "@graphql-codegen/typescript-operations": "^1.17.12",
+    "@snowpack/plugin-babel": "2.1.4",
+    "@snowpack/plugin-dotenv": "^2.0.5",
+    "@snowpack/plugin-optimize": "0.2.9",
+    "@snowpack/plugin-svelte": "3.3.0",
+    "@types/express": "^4.17.9",
+    "@types/node": "^14.14.14",
+    "autoprefixer": "^10.1.0",
+    "dotenv": "^8.2.0",
+    "graphql-codegen-svelte": "^0.0.7",
+    "nodemon": "^2.0.6",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.2.1",
+    "snowpack": "^2.18.5",
+    "subscriptions-transport-ws": "^0.9.18",
+    "svelte": "^3.31.0",
+    "svelte-preprocess": "^4.6.1",
+    "svelte-spa-router": "3.0.5",
+    "tailwindcss": "^2.0.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.6",
+    "axios": "^0.21.0",
+    "express": "^4.17.1",
+    "firebase": "^8.2.0",
+    "graphql": "^15.4.0",
+    "svelte-apollo": "^0.4.0",
+    "svelte-select": "^3.14.3"
+  }
+}

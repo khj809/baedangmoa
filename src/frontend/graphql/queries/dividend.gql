@@ -1,0 +1,46 @@
+fragment dividend on Dividend {
+  id
+  company {
+    ticker
+    name
+    exchange
+    country
+  }
+  currency {
+    symbol
+    name
+  }
+  amount_pretax
+  amount_posttax
+  date
+}
+
+query GetDividends($userId: String!) {
+  Dividend(where: { user_id: { _eq: $userId } }) {
+    ...dividend
+  }
+}
+
+mutation CreateDividend($dividend: Dividend_insert_input!, $company: Company_insert_input!) {
+  insert_Company_one(object: $company, on_conflict: { constraint: Company_pkey, update_columns: [] }) {
+    ticker
+    name
+    exchange
+    country
+  }
+  insert_Dividend_one(object: $dividend) {
+    ...dividend
+  }
+}
+
+mutation UpdateDividend($id: uuid!, $set: Dividend_set_input!) {
+  update_Dividend_by_pk(pk_columns: { id: $id }, _set: $set) {
+    ...dividend
+  }
+}
+
+mutation DeleteDividend($id: uuid!) {
+  delete_Dividend_by_pk(id: $id) {
+    ...dividend
+  }
+}

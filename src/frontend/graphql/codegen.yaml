@@ -1,0 +1,14 @@
+overwrite: true
+schema:
+  - "https://baedangmoa.hasura.app/v1/graphql":
+      headers:
+        x-hasura-admin-secret: ${HASURA_ADMIN_SECRET}
+documents: "src/frontend/graphql/queries/*.gql"
+generates:
+  src/frontend/graphql/codegen.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "graphql-codegen-svelte"
+    config:
+      namingConvention: keep

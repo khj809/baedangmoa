@@ -1,0 +1,17 @@
+{
+  "include": ["src", "types"],
+  "exclude": ["node_modules/*"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["src/*"]
+    },
+    "types": ["svelte", "node"],
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  }
+}
