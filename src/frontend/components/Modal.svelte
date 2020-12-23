@@ -45,7 +45,7 @@
     bind:this={background}
     on:click={handleOuterClick}>
     <div
-      class="relative w-1/2 max-w-full max-h-full mx-auto my-2 bg-white overflow-scroll"
+      class="relative max-w-full max-h-full mx-auto my-2 bg-white overflow-scroll"
       bind:this={modalWindow}
       on:introstart={onOpen}
       on:outrostart={onClose}
