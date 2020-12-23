@@ -1,15 +1,26 @@
 <script>
-  import { pop, push } from "svelte-spa-router";
+  import { getContext } from "svelte";
+  import { fade } from "svelte/transition";
 
   import { CreateDividend, GetDividendsDoc } from "~/frontend/graphql/codegen";
   import { authState } from "~/frontend/stores/auth";
   import CompanySelector from "~/frontend/components/CompanySelector";
+  import DatePicker from "~/frontend/components/DatePicker.svelte";
+
+  const { close } = getContext("modal");
 
   let selectedCompany;
   let selectedCurrency;
   let amountPretax;
   let amountPosttax;
   let dividendDate;
+
+  let dateChosen;
+  let formattedSelectedDate;
+
+  $: {
+    console.log(dividendDate);
+  }
 
   const _createDividend = CreateDividend();
   const onSubmit = async (e) => {
@@ -42,36 +53,57 @@
       },
     });
     if (!result.errors) {
-      push("/dividends");
+      close();
     }
   };
 </script>
 
-<button on:click={pop}>뒤로가기</button>
-<h1 class="text-4xl">새 배당 추가하기</h1>
-<form on:submit|preventDefault={onSubmit}>
-  <CompanySelector bind:selectedCompany />
-  <select class="w-full" name="currency_symbol" default="USD" bind:value={selectedCurrency} required>
-    <option value="USD">USD</option>
-    <option value="KRW">KRW</option>
-  </select>
-  <input
-    class="w-full"
-    type="number"
-    step="any"
-    name="amount_pretax"
-    bind:value={amountPretax}
-    placeholder="세전 금액"
-    required />
-  <input
-    class="w-full"
-    type="number"
-    step="any"
-    name="amount_posttax"
-    bind:value={amountPosttax}
-    placeholder="세후 금액"
-    required />
-  <input class="w-full" type="date" placeholder="배당일" bind:value={dividendDate} required />
+<div>
+  <h2 class="relative text-xl text-center py-3 border-b border-gray-300">새 배당 추가</h2>
 
-  <input type="submit" value="추가" disabled={!selectedCompany} />
-</form>
+  <form on:submit|preventDefault={onSubmit} class="mt-10 px-2 md:px-8">
+    <CompanySelector bind:selectedCompany />
+
+    <div class="flex mt-3 border-b border-gray-300">
+      <select class="p-2.5 cursor-pointer" name="currency_symbol" default="USD" bind:value={selectedCurrency} required>
+        <option value="USD">$</option>
+        <option value="KRW">₩</option>
+      </select>
+      <input
+        class="w-full p-2.5"
+        type="number"
+        step="any"
+        name="amount_pretax"
+        bind:value={amountPretax}
+        placeholder="세전 금액"
+        required />
+    </div>
+
+    <div class="flex mt-2.5 border-b border-gray-300">
+      <select class="p-2.5 cursor-pointer" name="currency_symbol" default="USD" bind:value={selectedCurrency} required>
+        <option value="USD">$</option>
+        <option value="KRW">₩</option>
+      </select>
+      <input
+        class="w-full p-2.5"
+        type="number"
+        step="any"
+        name="amount_posttax"
+        bind:value={amountPosttax}
+        placeholder="세후 금액"
+        required />
+    </div>
+
+    <DatePicker bind:selected={dividendDate} bind:formattedSelected={formattedSelectedDate}>
+      <div class="mt-3 p-2.5 border-b border-gray-300 cursor-pointer">
+        <p>배당 입금일: {formattedSelectedDate}</p>
+      </div>
+    </DatePicker>
+
+    <input
+      class="w-full text-white mt-10 p-2.5 rounded-md bg-indigo-700 cursor-pointer"
+      type="submit"
+      value="추가"
+      disabled={!selectedCompany} />
+  </form>
+</div>

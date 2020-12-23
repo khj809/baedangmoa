@@ -45,6 +45,7 @@
     "firebase": "^8.2.0",
     "graphql": "^15.4.0",
     "svelte-apollo": "^0.4.0",
+    "svelte-calendar": "^2.0.4",
     "svelte-select": "^3.14.3"
   }
 }

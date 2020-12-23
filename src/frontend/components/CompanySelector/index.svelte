@@ -22,6 +22,16 @@
   const getSelectionLabel = (option) => `${option.ticker} - ${option.name}`;
 </script>
 
+<style global>
+  .selectContainer > input::placeholder {
+    font-size: 1rem;
+  }
+
+  .selectContainer > div:not(.spinner):not(.clearSelect) {
+    left: -1px !important;
+  }
+</style>
+
 <Select
   loadOptions={searchCompanies}
   bind:selectedValue={selectedCompany}

@@ -6349,6 +6349,13 @@ svelte-apollo@^0.4.0:
   resolved "https://registry.yarnpkg.com/svelte-apollo/-/svelte-apollo-0.4.0.tgz#9a518824806f70c570f7453cfcc1beb2c5c79829"
   integrity sha512-VbianysptRx9wy6vQPd2lIRBVKV0XPtrSvqcMctihc5xGl1TVffNp8qsiSlqx2jnOlvOGUSK8xl4GW7C6bzSjw==
 
+svelte-calendar@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/svelte-calendar/-/svelte-calendar-2.0.4.tgz#0084a9e7a0279f43aaae4b4a108b0c68a960a0ee"
+  integrity sha512-a9TGBCc17qrvgdO79py2whwvtgaZzOHiMMygc2aNyYzETQI/H60g3kmHyq+llDf+wSEFWqy0LO71rBrzBCfRFA==
+  dependencies:
+    timeUtils "^2.0.0"
+
 svelte-hmr@^0.11.2:
   version "0.11.6"
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.11.6.tgz#67f0498e2cdce9e1039631d820c1951bd01caa3f"
@@ -6446,6 +6453,11 @@ through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+timeUtils@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/timeUtils/-/timeUtils-2.0.0.tgz#b3ac3eaa8f6d47e9ca008c76e9fd5b0f0afc18c0"
+  integrity sha512-rk1y/5ix4HczK3q4caEvo2iIhgRIHL6g85sX2rPNse8sKUATzYEAX1jAYYsW139aAcn1b24jV4By0SLmosQVyA==
 
 tmp@^0.0.33:
   version "0.0.33"

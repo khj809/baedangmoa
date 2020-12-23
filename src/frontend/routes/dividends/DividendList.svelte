@@ -5,7 +5,9 @@
 
   import { authState } from "~/frontend/stores/auth";
   import { GetDividends, GetDividendsDoc, UpdateDividend, DeleteDividend } from "~/frontend/graphql/codegen";
+  import Header from "~/frontend/components/Header.svelte";
   import CompanyInfo from "~/frontend/components/CompanyInfo.svelte";
+  import AddDividend from "./AddDividend.svelte";
   import { thousandSeparate } from "~/frontend/utils/number";
 
   const openModal = getContext("modal").open;
@@ -60,70 +62,101 @@
       curFocusedDiv = dividend.id;
     }
   };
+
+  const onCreateDividend = () => {
+    openModal(AddDividend);
+  };
 </script>
 
 <style>
-  td {
-    text-align: center;
+  .float-fix:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+
+  .box-shadow {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+
+  .icon-add:hover svg {
+    stroke: #fff;
+  }
+
+  th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border: 1px solid #fff;
+  }
+
+  .tr-info-1 {
+    background-color: #eee;
+  }
+
+  .tr-button > td {
     padding: 0;
   }
 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 
   .loader {
-    border-top-color: #3498db;
+    border-top-color: rgba(79, 70, 229);
   }
 </style>
 
-<div class="flex w-full justify-end">
-  <a href="/dividends/new" use:link>
-    <div class="mt-2 mr-2">
-      <button class="inline-flex items-center py-2 px-4 rounded font-bold bg-pink-200 hover:bg-pink-400">
-        <svg class="w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span>새 배당 추가</span>
-      </button>
-    </div>
-  </a>
+<Header />
+
+<div class="float-right float-fix mr-2 md:mr-8">
+  <button
+    class="flex items-center font-bold text-sm md:text-base text-indigo-600 hover:text-white my-4 py-2 px-4 border-2 border-indigo-600 hover:bg-indigo-600 icon-add"
+    on:click={onCreateDividend}>
+    <svg class="w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="rgba(79, 70, 229">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    새 배당 추가
+  </button>
 </div>
-<table class="w-full mt-10 table-fixed">
-  <colgroup>
-    <col width="40%" />
-    <col width="20%" />
-    <col width="20%" />
-    <col width="20%" />
-  </colgroup>
-  <thead>
-    <tr>
-      <th>종목</th>
-      <th class="text-right">세전 배당금</th>
-      <th class="text-right">세후 배당금</th>
-      <th>배당입금일</th>
-    </tr>
-  </thead>
-  {#if !$dividends.loading}
+
+{#if !$dividends.loading}
+  <table class="w-full table-fixed">
+    <colgroup>
+      <col width="35%" />
+      <col width="20%" />
+      <col width="20%" />
+      <col width="25%" />
+    </colgroup>
+
+    <thead class="border-b-2 border-gray-300 ">
+      <tr>
+        <th class="text-left pl-2 md:pl-8">종목</th>
+        <th class="text-right">세전 배당금</th>
+        <th class="text-right">세후 배당금</th>
+        <th class="text-right pr-2 md:pr-8">배당입금일</th>
+      </tr>
+    </thead>
+
     <tbody>
-      {#each $dividends.data.Dividend as dividend}
-        <tr class="hover:bg-gray-300 h-16" on:click={() => onDividendClicked(dividend)}>
-          <td>
-            <div class="flex space-x-2 items-center w-full">
+      {#each $dividends.data.Dividend as dividend, idx}
+        <tr class={`h-16 tr-info-${idx % 2}`} on:click={() => onDividendClicked(dividend)}>
+          <td class="pl-2 md:pl-8">
+            <div class="flex items-center w-full">
               <img
-                class="flex-shrink-0"
+                class="flex-shrink-0 rounded-full"
                 width={40}
                 alt={dividend.company.country}
                 src={`https://s3-symbol-logo.tradingview.com/country/${dividend.company.country}.svg`} />
-              <div class="no-scrollbar text-left overflow-scroll">
+              <div class="no-scrollbar text-left overflow-scroll ml-4">
                 <p class="font-bold cursor-pointer inline-block" on:click={() => onCompanyClicked(dividend.company)}>
                   {dividend.company.ticker}
                 </p>
@@ -133,23 +166,27 @@
           </td>
           <td>
             <div class="no-scrollbar text-right">
-              {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_pretax)}
+              <p class="text-sm font-bold md:text-base">
+                {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_pretax)}
+              </p>
             </div>
           </td>
           <td>
             <div class="no-scrollbar text-right">
-              {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_posttax)}
+              <p class="text-sm font-bold md:text-base">
+                {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_posttax)}
+              </p>
             </div>
           </td>
-          <td>
-            <p class="text-xs md:text-base">{dividend.date}</p>
+          <td class="text-right pr-2 md:pr-8">
+            <p class="text-sm md:text-base text-right">{dividend.date}</p>
           </td>
         </tr>
         {#if curFocusedDiv === dividend.id}
-          <tr>
+          <tr class="tr-button">
             <td colspan={4}>
               <div class="flex" transition:slide={{ duration: 300 }}>
-                <button class="flex w-full bg-blue-300 py-3 justify-center items-center font-bold">
+                <button class="flex justify-center items-center w-full bg-blue-100 text-sm md:text-base">
                   <svg
                     class="w-5 h-5 mr-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +202,7 @@
                   <span>수정</span>
                 </button>
                 <button
-                  class="flex w-full bg-red-200 py-3 justify-center items-center font-bold"
+                  class="flex justify-center items-center w-full py-3 bg-red-100 text-sm md:text-base"
                   on:click={() => deleteDividend(dividend.id)}>
                   <svg
                     class="w-5 h-5 mr-2"
@@ -187,10 +224,10 @@
         {/if}
       {/each}
     </tbody>
-  {/if}
-</table>
+  </table>
+{/if}
 
 {#if $dividends.loading}
-  <div class="loader mx-auto mt-10 animate-spin rounded-full border-8 border-t-8 border-gray-200 h-64 w-64" />
-  <div class="mx-auto text-center mt-5">배당목록을 조회하고 있습니다</div>
+  <div class="loader mx-auto mt-10 animate-spin rounded-full border-8 border-t-8 border-gray-200 h-16 w-16" />
+  <div class="mx-auto text-center mt-6 font-bold text-gray-500">배당 목록을 조회하고 있습니다.</div>
 {/if}

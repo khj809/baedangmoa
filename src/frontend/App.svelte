@@ -5,7 +5,6 @@
   import client from "~/frontend/graphql/client";
   import routes from "~/frontend/routes";
   import { authState } from "~/frontend/stores/auth";
-  import Header from "~/frontend/components/Header.svelte";
   import Modal from "~/frontend/components/Modal.svelte";
 
   setClient(client);
@@ -17,8 +16,7 @@
   @tailwind utilities;
 </style>
 
-<Modal >
-  <Header />
+<Modal>
   {#if $authState.status === 'loading'}
     <div>Loading auth state..</div>
   {:else}
