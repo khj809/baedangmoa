@@ -75,28 +75,47 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .loader {
+    border-top-color: #3498db;
+  }
 </style>
 
-{#if !$dividends.loading}
-  <a href="/dividends/new" use:link>새 배당 추가</a>
-  <table class="w-full mt-10 table-fixed">
-    <colgroup>
-      <col width="40%" />
-      <col width="20%" />
-      <col width="20%" />
-      <col width="20%" />
-    </colgroup>
-    <thead>
-      <tr>
-        <th>종목</th>
-        <th>세전 배당금</th>
-        <th>세후 배당금</th>
-        <th>배당일</th>
-      </tr>
-    </thead>
+<div class="flex w-full justify-end">
+  <a href="/dividends/new" use:link>
+    <div class="mt-2 mr-2">
+      <button class="inline-flex items-center py-2 px-4 rounded font-bold bg-pink-200 hover:bg-pink-400">
+        <svg class="w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>새 배당 추가</span>
+      </button>
+    </div>
+  </a>
+</div>
+<table class="w-full mt-10 table-fixed">
+  <colgroup>
+    <col width="40%" />
+    <col width="20%" />
+    <col width="20%" />
+    <col width="20%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>종목</th>
+      <th class="text-right">세전 배당금</th>
+      <th class="text-right">세후 배당금</th>
+      <th>배당입금일</th>
+    </tr>
+  </thead>
+  {#if !$dividends.loading}
     <tbody>
       {#each $dividends.data.Dividend as dividend}
-        <tr class="hover:bg-gray-300" on:click={() => onDividendClicked(dividend)}>
+        <tr class="hover:bg-gray-300 h-16" on:click={() => onDividendClicked(dividend)}>
           <td>
             <div class="flex space-x-2 items-center w-full">
               <img
@@ -130,13 +149,48 @@
           <tr>
             <td colspan={4}>
               <div class="flex" transition:slide={{ duration: 300 }}>
-                <button class="w-full bg-blue-300 py-3">수정</button>
-                <button class="w-full bg-red-200 py-3" on:click={() => deleteDividend(dividend.id)}>삭제</button>
+                <button class="flex w-full bg-blue-300 py-3 justify-center items-center font-bold">
+                  <svg
+                    class="w-5 h-5 mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  <span>수정</span>
+                </button>
+                <button
+                  class="flex w-full bg-red-200 py-3 justify-center items-center font-bold"
+                  on:click={() => deleteDividend(dividend.id)}>
+                  <svg
+                    class="w-5 h-5 mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <span>삭제</span>
+                </button>
               </div>
             </td>
           </tr>
         {/if}
       {/each}
     </tbody>
-  </table>
+  {/if}
+</table>
+
+{#if $dividends.loading}
+  <div class="loader mx-auto mt-10 animate-spin rounded-full border-8 border-t-8 border-gray-200 h-64 w-64" />
+  <div class="mx-auto text-center mt-5">배당목록을 조회하고 있습니다</div>
 {/if}
