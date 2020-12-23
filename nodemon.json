@@ -1,5 +1,5 @@
 {
-  "watch": ["./src/backend/"],
-  "exec": "ts-node ./src/backend/index.ts",
+  "watch": ["./src/backend/", "./api"],
+  "exec": "ts-node -r tsconfig-paths/register ./src/backend/index.ts",
   "ext": "ts"
 }

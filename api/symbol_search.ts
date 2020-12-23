@@ -1,6 +1,6 @@
 import axios from "axios";
 
-module.exports = async (req, res) => {
+const handler = async (req, res) => {
   try {
     const result = await axios.get("https://symbol-search.tradingview.com/symbol_search/", {
       params: {
@@ -29,3 +29,5 @@ module.exports = async (req, res) => {
     });
   }
 };
+
+export default handler;

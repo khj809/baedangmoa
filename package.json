@@ -7,9 +7,7 @@
     "start:server": "NODE_ENV=development nodemon",
     "start": "run-p start:client start:server",
     "generate": "graphql-codegen --config src/frontend/graphql/codegen.yaml -r dotenv/config",
-    "build:client": "snowpack build",
-    "build:server": "tsc --project tsconfig.api.json",
-    "build": "rm -rf build api && run-p build:client build:server"
+    "build": "rm -rf build && snowpack build"
   },
   "author": "Haejoon Kim",
   "license": "ISC",
@@ -37,6 +35,7 @@
     "svelte-spa-router": "3.0.5",
     "tailwindcss": "^2.0.2",
     "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^4.1.3"
   },
   "dependencies": {

@@ -1,13 +1,14 @@
 {
-  "include": ["src", "types"],
-  "exclude": ["node_modules/*"],
+  "include": ["src", "api"],
+  "exclude": ["node_modules/*", "firebase/node_modules/*"],
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
     "moduleResolution": "node",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "@api/*": ["api/*"]
     },
     "types": ["svelte", "node"],
     "sourceMap": true,
