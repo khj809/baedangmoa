@@ -23,6 +23,10 @@
 </script>
 
 <style global>
+  .selectContainer > input {
+    cursor: text !important;
+  }
+
   .selectContainer > input::placeholder {
     font-size: 1rem;
   }
