@@ -18,7 +18,6 @@ export const signInWithKakao = () => {
     success: (authObj) => {
       const token = authObj.access_token;
       kakaoAuth({ token }).then((res) => {
-        console.log(res.data);
         const firebaseToken = res.data.firebase_token;
         app.auth().signInWithCustomToken(firebaseToken);
       });

@@ -1,6 +1,7 @@
 <script>
   import { getContext } from "svelte";
-  import { fade } from "svelte/transition";
+  import { scale } from "svelte/transition";
+  import { cubicInOut } from "svelte/easing";
 
   import { CreateDividend, GetDividendsDoc } from "~/frontend/graphql/codegen";
   import { authState } from "~/frontend/stores/auth";
@@ -58,7 +59,7 @@
   };
 </script>
 
-<div>
+<div transition:scale={{ duration: 300, easing: cubicInOut }}>
   <h2 class="relative text-xl text-center py-3 border-b border-gray-300">새 배당 추가</h2>
 
   <form on:submit|preventDefault={onSubmit} class="mt-10 px-2 md:px-8">

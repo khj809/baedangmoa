@@ -27,7 +27,6 @@ export const onConditionsFailed = (event) => {
 };
 
 export default {
-  "/dividends/new": withAuth(AddDividendPage),
   "/dividends": withAuth(DividendListPage),
   "/": Home,
   "*": NotFound,
