@@ -2,6 +2,7 @@
   import { getContext } from "svelte";
   import { scale } from "svelte/transition";
   import { cubicInOut } from "svelte/easing";
+  import dayjs from "dayjs";
 
   import { CreateDividend, GetDividendsDoc } from "~/frontend/graphql/codegen";
   import { authState } from "~/frontend/stores/auth";
@@ -16,12 +17,7 @@
   let amountPosttax;
   let dividendDate;
 
-  let dateChosen;
   let formattedSelectedDate;
-
-  $: {
-    console.log(dividendDate);
-  }
 
   const _createDividend = CreateDividend();
   const onSubmit = async (e) => {
@@ -32,7 +28,7 @@
           currency_symbol: selectedCurrency,
           amount_pretax: amountPretax,
           amount_posttax: amountPosttax,
-          date: dividendDate,
+          date: dayjs(dividendDate).format("YYYY-MM-DD"),
         },
         company: selectedCompany,
       },
@@ -66,7 +62,12 @@
     <CompanySelector bind:selectedCompany />
 
     <div class="flex mt-3 border-b border-gray-300">
-      <select class="p-2.5 cursor-pointer" name="currency_symbol" default="USD" bind:value={selectedCurrency} required>
+      <select
+        class="p-2.5 cursor-pointer bg-white"
+        name="currency_symbol"
+        default="USD"
+        bind:value={selectedCurrency}
+        required>
         <option value="USD">$</option>
         <option value="KRW">₩</option>
       </select>
@@ -81,7 +82,12 @@
     </div>
 
     <div class="flex mt-2.5 border-b border-gray-300">
-      <select class="p-2.5 cursor-pointer" name="currency_symbol" default="USD" bind:value={selectedCurrency} required>
+      <select
+        class="p-2.5 cursor-pointer bg-white"
+        name="currency_symbol"
+        default="USD"
+        bind:value={selectedCurrency}
+        required>
         <option value="USD">$</option>
         <option value="KRW">₩</option>
       </select>

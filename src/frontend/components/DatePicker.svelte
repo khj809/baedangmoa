@@ -1,7 +1,7 @@
 <script>
   export let selected;
-  export let dateChosen;
-  export let formattedSelected;
+  export let dateChosen = null;
+  export let formattedSelected = null;
 
   import DatePicker from "svelte-calendar";
 
@@ -37,6 +37,6 @@
   }
 </style>
 
-<DatePicker {format} {daysOfWeek} {monthsOfYear} bind:formattedSelected bind:selected bind:dateChosen>
+<DatePicker {format} {daysOfWeek} {monthsOfYear} bind:selected bind:formattedSelected bind:dateChosen>
   <slot />
 </DatePicker>
