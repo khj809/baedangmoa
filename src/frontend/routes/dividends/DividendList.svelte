@@ -68,20 +68,6 @@
 </script>
 
 <style>
-  .float-fix:after {
-    display: block;
-    content: "";
-    clear: both;
-  }
-
-  .box-shadow {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  }
-
-  .icon-add:hover svg {
-    stroke: #fff;
-  }
-
   th {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -104,30 +90,31 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-
-  .loader {
-    border-top-color: rgba(79, 70, 229);
-  }
 </style>
 
-<Header />
-
-<div class="float-right float-fix mr-2 md:mr-8">
-  <button
-    class="flex items-center font-bold text-sm md:text-base text-indigo-600 hover:text-white my-4 py-2 px-4 border-2 border-indigo-600 hover:bg-indigo-600 icon-add"
-    on:click={onCreateDividend}>
-    <svg class="w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="rgba(79, 70, 229">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    새 배당 추가
-  </button>
-</div>
-
 {#if !$dividends.loading}
+  <Header />
+
+  <div class="float-right float-fix mr-2 md:mr-8">
+    <button
+      class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold my-4 py-2 px-2 rounded-sm bg-indigo-100 hover:bg-indigo-200"
+      on:click={onCreateDividend}>
+      <svg
+        class="w-5 mr-2"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="rgba(79, 70, 229)">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      새 배당 추가
+    </button>
+  </div>
+
   <table class="w-full table-fixed">
     <colgroup>
       <col width="35%" />
@@ -139,15 +126,15 @@
     <thead class="border-b-2 border-gray-300 ">
       <tr>
         <th class="text-left pl-2 md:pl-8">종목</th>
-        <th class="text-right">세전 배당금</th>
-        <th class="text-right">세후 배당금</th>
-        <th class="text-right pr-2 md:pr-8">배당입금일</th>
+        <th class="text-right keepall-word">세전 배당금</th>
+        <th class="text-right keepall-word">세후 배당금</th>
+        <th class="text-right pr-2 md:pr-8 keepall-word">배당 입금일</th>
       </tr>
     </thead>
 
     <tbody>
       {#each $dividends.data.Dividend as dividend, idx}
-        <tr class={`h-16 tr-info-${idx % 2}`} on:click={() => onDividendClicked(dividend)}>
+        <tr class={`h-16 tr-info-${idx % 2} cursor-pointer`} on:click={() => onDividendClicked(dividend)}>
           <td class="pl-2 md:pl-8">
             <div class="flex items-center w-full">
               <img
@@ -156,7 +143,7 @@
                 alt={dividend.company.country}
                 src={`https://s3-symbol-logo.tradingview.com/country/${dividend.company.country}.svg`} />
               <div class="no-scrollbar text-left overflow-scroll ml-4">
-                <p class="font-bold cursor-pointer inline-block" on:click={() => onCompanyClicked(dividend.company)}>
+                <p class="inline-block font-bold" on:click={() => onCompanyClicked(dividend.company)}>
                   {dividend.company.ticker}
                 </p>
                 <p class="text-xs whitespace-nowrap">{dividend.company.name}</p>
@@ -185,7 +172,8 @@
           <tr class="tr-button">
             <td colspan={4}>
               <div class="flex" transition:slide={{ duration: 300 }}>
-                <button class="flex justify-center items-center w-full bg-blue-100 text-sm md:text-base">
+                <button
+                  class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-blue-100 hover:bg-blue-200">
                   <svg
                     class="w-5 h-5 mr-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +189,7 @@
                   <span>수정</span>
                 </button>
                 <button
-                  class="flex justify-center items-center w-full py-3 bg-red-100 text-sm md:text-base"
+                  class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-red-100 hover:bg-red-200"
                   on:click={() => deleteDividend(dividend.id)}>
                   <svg
                     class="w-5 h-5 mr-2"
@@ -227,6 +215,12 @@
 {/if}
 
 {#if $dividends.loading}
-  <div class="loader mx-auto mt-10 animate-spin rounded-full border-8 border-t-8 border-gray-200 h-16 w-16" />
-  <div class="mx-auto text-center mt-6 font-bold text-gray-500">배당 목록을 조회하고 있습니다.</div>
+  <div class="table w-full h-screen">
+    <div class="table-cell text-center align-middle">
+      <div class="inline-block align-top">
+        <div class="loader mx-auto animate-spin w-16 h-16 rounded-full border-8 border-t-8 border-gray-200" />
+        <div class="mx-auto text-center text-gray-500 font-semibold mt-6">배당 목록을 조회하고 있습니다.</div>
+      </div>
+    </div>
+  </div>
 {/if}

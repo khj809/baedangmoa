@@ -56,12 +56,12 @@
 </script>
 
 <div transition:scale={{ duration: 300, easing: cubicInOut }}>
-  <h2 class="relative text-xl text-center py-3 border-b border-gray-300">새 배당 추가</h2>
+  <h2 class="relative text-xl text-center py-4 border-b border-gray-300">새 배당 추가</h2>
 
-  <form on:submit|preventDefault={onSubmit} class="mt-10 px-2 md:px-8">
+  <form on:submit|preventDefault={onSubmit} class="mt-12 px-4 md:px-8">
     <CompanySelector bind:selectedCompany />
 
-    <div class="flex mt-3 border-b border-gray-300">
+    <div class="flex mt-8 border-b border-gray-300">
       <select
         class="p-2.5 cursor-pointer bg-white"
         name="currency_symbol"
@@ -81,7 +81,7 @@
         required />
     </div>
 
-    <div class="flex mt-2.5 border-b border-gray-300">
+    <div class="flex mt-8 border-b border-gray-300">
       <select
         class="p-2.5 cursor-pointer bg-white"
         name="currency_symbol"
@@ -102,13 +102,23 @@
     </div>
 
     <DatePicker bind:selected={dividendDate} bind:formattedSelected={formattedSelectedDate}>
-      <div class="mt-3 p-2.5 border-b border-gray-300 cursor-pointer">
-        <p>배당 입금일: {formattedSelectedDate}</p>
+      <div class="mt-8 p-2.5 bg-gray-200 cursor-pointer">
+        <div>
+          <span class="align-middle">배당 입금일: {formattedSelectedDate}</span>
+          <svg
+            class="inline align-middle ml-2 w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
     </DatePicker>
 
     <input
-      class="w-full text-white mt-10 p-2.5 rounded-md bg-indigo-700 cursor-pointer"
+      class="w-full text-white mt-12 p-2.5 rounded-sm bg-indigo-700 cursor-pointer"
       type="submit"
       value="추가"
       disabled={!selectedCompany} />
