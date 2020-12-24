@@ -3,7 +3,7 @@
   import { slide } from "svelte/transition";
 
   import { authState } from "~/frontend/stores/auth";
-  import { signOut } from "~/frontend/firebase";
+  import { signOut } from "~/frontend/auth";
   import clickOutside from "~/frontend/actions/clickOutside";
 
   let showMenu = false;

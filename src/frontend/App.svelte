@@ -1,9 +1,9 @@
 <script>
   import { setClient } from "svelte-apollo";
-  import Router, { location } from "svelte-spa-router";
+  import Router from "svelte-spa-router";
 
   import client from "~/frontend/graphql/client";
-  import routes from "~/frontend/routes";
+  import routes, { onConditionsFailed } from "~/frontend/routes";
   import { authState } from "~/frontend/stores/auth";
   import Modal from "~/frontend/components/Modal.svelte";
 
@@ -20,8 +20,6 @@
   {#if $authState.status === 'loading'}
     <div>Loading auth state..</div>
   {:else}
-    {#key $location}
-      <Router {routes} restoreScrollState={true} />
-    {/key}
+    <Router {routes} restoreScrollState={true} on:conditionsFailed={onConditionsFailed} />
   {/if}
 </Modal>

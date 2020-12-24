@@ -1,4 +1,4 @@
-import axios from "axios";
+const axios = require("axios");
 
 const handler = async (req, res) => {
   try {
@@ -30,4 +30,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler;
+module.exports = handler;

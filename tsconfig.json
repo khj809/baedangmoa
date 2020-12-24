@@ -2,7 +2,7 @@
   "include": ["src", "api"],
   "exclude": ["node_modules/*", "firebase/node_modules/*"],
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es6",
     "moduleResolution": "node",
     "baseUrl": ".",

@@ -1,6 +1,5 @@
 <script>
   import { getContext } from "svelte";
-  import { link } from "svelte-spa-router";
   import { slide } from "svelte/transition";
 
   import { authState } from "~/frontend/stores/auth";
@@ -19,7 +18,7 @@
 
   let curFocusedDiv = null;
 
-  let dividends = GetDividends({ userId: $authState.user.uid });
+  let dividends = GetDividends({ userId: $authState.user?.uid });
 
   //   const updateDividend = async (id, set) => {
   //     const result = await $client.mutate({ mutation: UpdateDividendDocument, variables: { id, set } });

@@ -1,6 +1,5 @@
-import express from "express";
-import App from "~/frontend/App.svelte";
-import symbolSearch from "@api/symbol_search";
+const express = require("express");
+const symbolSearch = require("@api/symbol_search");
 
 require("dotenv").config();
 
