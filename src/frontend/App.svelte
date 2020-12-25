@@ -6,6 +6,7 @@
   import routes, { onConditionsFailed } from "~/frontend/routes";
   import { authState } from "~/frontend/stores/auth";
   import Modal from "~/frontend/components/Modal.svelte";
+  import Loader from "~/frontend/components/Loader.svelte";
 
   setClient(client);
 </script>
@@ -15,22 +16,18 @@
   @tailwind components;
   @tailwind utilities;
 
-  .loader {
-    border-top-color: rgba(79, 70, 229);
-  }
+  @layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
-  .keepall-word {
-    word-break: keep-all;
-  }
-
-  .float-fix:after {
-    display: block;
-    content: "";
-    clear: both;
-  }
-
-  .box-shadow {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    .break-keepall {
+      word-break: keep-all;
+    }
   }
 </style>
 
@@ -39,7 +36,7 @@
     <div class="table w-full h-screen">
       <div class="table-cell text-center align-middle">
         <div class="inline-block align-top">
-          <div class="loader mx-auto animate-spin w-16 h-16 rounded-full border-8 border-t-8 border-gray-200" />
+          <Loader />
           <div class="mx-auto text-center text-gray-500 font-semibold mt-6">Loading auth state..</div>
         </div>
       </div>

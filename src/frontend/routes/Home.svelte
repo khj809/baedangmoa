@@ -1,7 +1,8 @@
 <script>
   import { signInWithGoogle, initKakao, signInWithKakao } from "~/frontend/auth";
-  import { authState } from "~/frontend/stores/auth";
+  import { authState, loggedIn } from "~/frontend/stores/auth";
   import Avatar from "~/frontend/components/Avatar.svelte";
+  import Loader from "~/frontend/components/Loader.svelte";
 </script>
 
 <style>
@@ -11,12 +12,23 @@
 </style>
 
 <svelte:head>
-  <script src="/vendors/kakao.min.js" on:load={initKakao}>
+  <script src="https://developers.kakao.com/sdk/js/kakao.min.js" on:load={initKakao}>
   </script>
 </svelte:head>
 
+{#if $authState.status === 'authenticating'}
+  <div class="fixed table w-screen h-screen z-50 bg-white opacity-80">
+    <div class="table-cell text-center align-middle">
+      <div class="inline-block align-top">
+        <Loader />
+        <div class="mx-auto text-center font-semibold mt-6 opacity-100">로그인 중입니다. 잠시만 기다려 주세요..</div>
+      </div>
+    </div>
+  </div>
+{/if}
+
 <div class="table w-full h-screen bg-gradient-to-b from-purple-200 via-blue-100 to-blue-300">
-  {#if $authState.status === 'in'}
+  {#if $loggedIn}
     <div class="absolute top-4 right-4 md:right-8">
       <Avatar />
     </div>
@@ -24,10 +36,10 @@
   <div class="table-cell text-center align-middle">
     <div class="inline-block align-top p-2">
       <h1 class="font-extrabold text-center text-5xl text-indigo-700 pb-3">배당모아</h1>
-      <p class="intro-text text-center text-md md:text-lg text-gray-500 font-semibold keepall-word">
+      <p class="intro-text text-center text-md md:text-lg text-gray-500 font-semibold break-keepall">
         한눈에 보기 쉽게 정리하는 나만의 배당 가계부!
       </p>
-      {#if $authState.status === 'out'}
+      {#if !$loggedIn}
         <div class="flex flex-col items-center mt-8 space-y-3">
           <button
             class="login-button flex items-center w-60 h-11 text-md text-gray-700 rounded-md bg-white"

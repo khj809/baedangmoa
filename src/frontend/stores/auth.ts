@@ -1,8 +1,8 @@
 import firebase from "firebase/app";
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 
 interface AuthState {
-  status: "loading" | "in" | "out";
+  status: "loading" | "authenticating" | "in" | "out";
   user?: firebase.User;
   token?: string;
 }
@@ -18,7 +18,6 @@ const createAuthState = (value: AuthState) => {
   function get() {
     return value;
   }
-
   return {
     set,
     update,
@@ -30,3 +29,5 @@ const createAuthState = (value: AuthState) => {
 export const authState = createAuthState({
   status: "loading",
 });
+
+export const loggedIn = derived(authState, ($authState) => $authState.status === "in");

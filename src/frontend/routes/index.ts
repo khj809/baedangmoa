@@ -2,7 +2,7 @@ import { replace } from "svelte-spa-router";
 import { wrap } from "svelte-spa-router/wrap";
 import Home from "./Home.svelte";
 // import Mypage from './Mypage.svelte';
-import { DividendListPage, AddDividendPage } from "./dividends";
+import { DividendListPage } from "./dividends";
 import NotFound from "./NotFound.svelte";
 
 import { authState } from "~/frontend/stores/auth";
@@ -12,7 +12,6 @@ const withAuth = (Component) => {
     component: Component,
     conditions: [
       (detail) => {
-        console.log(!!authState.get());
         return !!authState.get().user;
       },
     ],

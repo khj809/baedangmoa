@@ -1,5 +1,6 @@
 import "firebase/functions";
 import app from "./firebase";
+import { authState } from "~/frontend/stores/auth";
 
 declare global {
   interface Window {
@@ -17,6 +18,7 @@ export const signInWithKakao = () => {
   window.Kakao.Auth.login({
     success: (authObj) => {
       const token = authObj.access_token;
+      authState.set({ status: "authenticating" });
       kakaoAuth({ token }).then((res) => {
         const firebaseToken = res.data.firebase_token;
         app.auth().signInWithCustomToken(firebaseToken);

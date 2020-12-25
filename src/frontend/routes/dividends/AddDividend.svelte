@@ -1,12 +1,13 @@
-<script>
+<script lang="ts">
   import { getContext } from "svelte";
   import { scale } from "svelte/transition";
   import { cubicInOut } from "svelte/easing";
   import dayjs from "dayjs";
 
   import { CreateDividend, GetDividendsDoc } from "~/frontend/graphql/codegen";
+  import type { GetDividendsQuery } from "~/frontend/graphql/codegen";
   import { authState } from "~/frontend/stores/auth";
-  import CompanySelector from "~/frontend/components/CompanySelector";
+  import CompanySelector from "~/frontend/components/CompanySelector/index.svelte";
   import DatePicker from "~/frontend/components/DatePicker.svelte";
 
   const { close } = getContext("modal");
@@ -34,7 +35,7 @@
       },
 
       update: (cache, { data: { insert_Dividend_one } }) => {
-        const existingDividends = cache.readQuery({
+        const existingDividends = cache.readQuery<GetDividendsQuery>({
           query: GetDividendsDoc,
           variables: { userId: $authState.user.uid },
         });
@@ -62,13 +63,8 @@
     <CompanySelector bind:selectedCompany />
 
     <div class="flex mt-8 border-b border-gray-300">
-      <select
-        class="p-2.5 cursor-pointer bg-white"
-        name="currency_symbol"
-        default="USD"
-        bind:value={selectedCurrency}
-        required>
-        <option value="USD">$</option>
+      <select class="p-2.5 cursor-pointer bg-white" name="currency_symbol" bind:value={selectedCurrency} required>
+        <option value="USD" default>$</option>
         <option value="KRW">₩</option>
       </select>
       <input
@@ -82,13 +78,8 @@
     </div>
 
     <div class="flex mt-8 border-b border-gray-300">
-      <select
-        class="p-2.5 cursor-pointer bg-white"
-        name="currency_symbol"
-        default="USD"
-        bind:value={selectedCurrency}
-        required>
-        <option value="USD">$</option>
+      <select class="p-2.5 cursor-pointer bg-white" name="currency_symbol" bind:value={selectedCurrency} required>
+        <option value="USD" default>$</option>
         <option value="KRW">₩</option>
       </select>
       <input

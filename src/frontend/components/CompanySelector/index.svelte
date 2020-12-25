@@ -7,7 +7,6 @@
 
   const searchCompanies = async (keyword) => {
     if (!keyword) {
-      searchedCompanies = [];
       return;
     }
     const result = await axios.get("/api/symbol_search", {

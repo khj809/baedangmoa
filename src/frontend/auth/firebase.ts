@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/database";
 import "firebase/functions";
 import { authState } from "~/frontend/stores/auth";
 

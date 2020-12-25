@@ -8,8 +8,10 @@
   import Header from "~/frontend/components/Header.svelte";
   import CompanyInfo from "~/frontend/components/CompanyInfo.svelte";
   import type { ModalContext } from "~/frontend/components/Modal.svelte";
+  import Loader from "~/frontend/components/Loader.svelte";
   import AddDividend from "./AddDividend.svelte";
   import { thousandSeparate } from "~/frontend/utils/number";
+  import { resolve } from "~/frontend/utils/object";
 
   const openModal = getContext<ModalContext>("modal").open;
 
@@ -21,7 +23,7 @@
   let dividends = GetDividends({ userId: $authState.user?.uid });
 
   type SortingOrder = "asc" | "desc";
-  type SortingField = "ticker" | "amountPretax" | "amountPosttax" | "date";
+  type SortingField = "company.ticker" | "amount_pretax" | "amount_posttax" | "date";
   let sortingOrder: SortingOrder = "desc";
   let sortingField: SortingField = "date";
   let sortedDividends: dividendFragment[] = null;
@@ -45,20 +47,9 @@
     if (!$dividends.loading && $dividends.data) {
       let _dividends = $dividends.data.Dividend.slice();
       if (sortingOrder && sortingField) {
-        const fieldMap = {
-          ticker: "company.ticker",
-          amountPretax: "amount_pretax",
-          amountPosttax: "amount_posttax",
-          date: "date",
-        };
-        function resolve(path, obj, separator = ".") {
-          var properties = Array.isArray(path) ? path : path.split(separator);
-          return properties.reduce((prev, curr) => prev && prev[curr], obj);
-        }
-        const fieldName = fieldMap[sortingField];
         _dividends.sort((a, b) => {
-          const aValue = resolve(fieldName, a);
-          const bValue = resolve(fieldName, b);
+          const aValue = resolve(a, sortingField);
+          const bValue = resolve(b, sortingField);
           const result = sortingOrder === "asc" ? aValue > bValue : aValue < bValue;
           return result ? 1 : -1;
         });
@@ -130,21 +121,12 @@
   .tr-button > td {
     padding: 0;
   }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
 </style>
 
 {#if !$dividends.loading}
   <Header />
 
-  <div class="float-right float-fix mr-2 md:mr-8">
+  <div class="float-right mr-2 md:mr-8">
     <button
       class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold my-4 py-2 px-2 rounded-sm bg-indigo-100 hover:bg-indigo-200"
       on:click={onCreateDividend}>
@@ -175,15 +157,15 @@
     <thead class="border-b-2 border-gray-300 ">
       <tr>
         <th class="text-left pl-2 md:pl-8">
-          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('ticker')}>종목</p>
+          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>종목</p>
         </th>
-        <th class="text-right keepall-word">
-          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amountPretax')}>세전 배당금</p>
+        <th class="text-right break-keepall">
+          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amount_pretax')}>세전 배당금</p>
         </th>
-        <th class="text-right keepall-word">
-          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amountPosttax')}>세후 배당금</p>
+        <th class="text-right break-keepall">
+          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amount_posttax')}>세후 배당금</p>
         </th>
-        <th class="text-right pr-2 md:pr-8 keepall-word">
+        <th class="text-right pr-2 md:pr-8 break-keepall">
           <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('date')}>배당입금일</p>
         </th>
       </tr>
@@ -275,7 +257,7 @@
   <div class="table w-full h-screen">
     <div class="table-cell text-center align-middle">
       <div class="inline-block align-top">
-        <div class="loader mx-auto animate-spin w-16 h-16 rounded-full border-8 border-t-8 border-gray-200" />
+        <Loader />
         <div class="mx-auto text-center text-gray-500 font-semibold mt-6">배당 목록을 조회하고 있습니다.</div>
       </div>
     </div>

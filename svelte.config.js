@@ -1,12 +1,12 @@
-const production = process.env.NODE_ENV === 'production';
+const production = process.env.NODE_ENV === "production";
 
 module.exports = {
-  preprocess: require('svelte-preprocess')({
-    postcss: {
-      plugins: [require('tailwindcss'), require('autoprefixer')],
+  preprocess: require("svelte-preprocess")({
+    defaults: {
+      script: "typescript",
     },
-    babel: {
-      presets: ['@babel/preset-typescript'],
+    postcss: {
+      plugins: [require("tailwindcss"), require("autoprefixer")],
     },
   }),
 };

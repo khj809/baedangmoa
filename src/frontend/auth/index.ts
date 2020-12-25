@@ -5,9 +5,8 @@ import { signInWithKakao, initKakao } from "./kakao";
 
 const signOut = async () => {
   try {
-    authState.set({ status: "loading" });
-    await app.auth().signOut();
     authState.set({ status: "out" });
+    await app.auth().signOut();
   } catch (error) {
     console.log(error);
   }

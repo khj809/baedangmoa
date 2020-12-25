@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import app from "./firebase";
+import { authState } from "~/frontend/stores/auth";
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
