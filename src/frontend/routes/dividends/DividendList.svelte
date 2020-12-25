@@ -9,6 +9,7 @@
   import CompanyInfo from "~/frontend/components/CompanyInfo.svelte";
   import type { ModalContext } from "~/frontend/components/Modal.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
+  import SortIcon from "~/frontend/components/SortIcon.svelte";
   import AddDividend from "./AddDividend.svelte";
   import { thousandSeparate } from "~/frontend/utils/number";
   import { resolve } from "~/frontend/utils/object";
@@ -32,8 +33,8 @@
     if (sortingField === field) {
       if (sortingOrder === "desc") {
         sortingOrder = "asc";
-      } else if (sortingOrder === "asc") {
-        sortingOrder = null;
+        // } else if (sortingOrder === "asc") {
+        //   sortingOrder = null;
       } else {
         sortingOrder = "desc";
       }
@@ -117,10 +118,6 @@
   .tr-info-1 {
     background-color: #eee;
   }
-
-  .tr-button > td {
-    padding: 0;
-  }
 </style>
 
 {#if !$dividends.loading}
@@ -146,7 +143,7 @@
     </button>
   </div>
 
-  <table class="w-full table-fixed">
+  <table class="w-full table-fixed mb-10">
     <colgroup>
       <col width="35%" />
       <col width="20%" />
@@ -157,23 +154,45 @@
     <thead class="border-b-2 border-gray-300 ">
       <tr>
         <th class="text-left pl-2 md:pl-8">
-          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>종목</p>
+          <div class="flex justify-start cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>
+            <p class="inline-block">종목</p>
+            {#if sortingField === 'company.ticker'}
+              <SortIcon order={sortingOrder} />
+            {/if}
+          </div>
         </th>
         <th class="text-right break-keepall">
-          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amount_pretax')}>세전 배당금</p>
+          <div class="flex justify-end cursor-pointer" on:click={() => onSortingChanged('amount_pretax')}>
+            {#if sortingField === 'amount_pretax'}
+              <SortIcon order={sortingOrder} />
+            {/if}
+            <p>세전 배당금</p>
+          </div>
         </th>
         <th class="text-right break-keepall">
-          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amount_posttax')}>세후 배당금</p>
+          <div class="flex justify-end cursor-pointer" on:click={() => onSortingChanged('amount_posttax')}>
+            {#if sortingField === 'amount_posttax'}
+              <SortIcon order={sortingOrder} />
+            {/if}
+            <p>세후 배당금</p>
+          </div>
         </th>
         <th class="text-right pr-2 md:pr-8 break-keepall">
-          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('date')}>배당입금일</p>
+          <div class="flex justify-end cursor-pointer" on:click={() => onSortingChanged('date')}>
+            {#if sortingField === 'date'}
+              <SortIcon order={sortingOrder} />
+            {/if}
+            <p>배당입금일</p>
+          </div>
         </th>
       </tr>
     </thead>
 
     <tbody>
       {#each sortedDividends as dividend, idx}
-        <tr class={`h-16 tr-info-${idx % 2} cursor-pointer`} on:click={() => onDividendClicked(dividend)}>
+        <tr
+          class={`h-16 cursor-pointer ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
+          on:click={() => onDividendClicked(dividend)}>
           <td class="pl-2 md:pl-8">
             <div class="flex items-center w-full">
               <img
@@ -208,8 +227,8 @@
           </td>
         </tr>
         {#if curFocusedDiv === dividend.id}
-          <tr class="tr-button">
-            <td colspan={4}>
+          <tr>
+            <td colspan={4} class="p-0">
               <div class="flex" transition:slide={{ duration: 300 }}>
                 <button
                   class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-blue-100 hover:bg-blue-200">
