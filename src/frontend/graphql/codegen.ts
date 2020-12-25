@@ -1206,7 +1206,7 @@ export const DividendFragmentDoc = gql`
 }
     `;
 export const GetDividendsDoc = gql`
-    query GetDividends($userId: String!) {
+    query GetDividends($userId: String!) @cached(ttl: 300) {
   Dividend(where: {user_id: {_eq: $userId}}) {
     ...dividend
   }

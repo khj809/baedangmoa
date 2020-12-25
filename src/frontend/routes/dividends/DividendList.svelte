@@ -1,24 +1,73 @@
-<script>
+<script lang="ts">
   import { getContext } from "svelte";
   import { slide } from "svelte/transition";
 
   import { authState } from "~/frontend/stores/auth";
   import { GetDividends, GetDividendsDoc, UpdateDividend, DeleteDividend } from "~/frontend/graphql/codegen";
+  import type { GetDividendsQuery, dividendFragment } from "~/frontend/graphql/codegen";
   import Header from "~/frontend/components/Header.svelte";
   import CompanyInfo from "~/frontend/components/CompanyInfo.svelte";
+  import type { ModalContext } from "~/frontend/components/Modal.svelte";
   import AddDividend from "./AddDividend.svelte";
   import { thousandSeparate } from "~/frontend/utils/number";
 
-  const openModal = getContext("modal").open;
+  const openModal = getContext<ModalContext>("modal").open;
 
   const currencySymbolMap = {
     USD: "$",
     KRW: "₩",
   };
 
-  let curFocusedDiv = null;
-
   let dividends = GetDividends({ userId: $authState.user?.uid });
+
+  type SortingOrder = "asc" | "desc";
+  type SortingField = "ticker" | "amountPretax" | "amountPosttax" | "date";
+  let sortingOrder: SortingOrder = "desc";
+  let sortingField: SortingField = "date";
+  let sortedDividends: dividendFragment[] = null;
+
+  const onSortingChanged = (field: SortingField) => {
+    if (sortingField === field) {
+      if (sortingOrder === "desc") {
+        sortingOrder = "asc";
+      } else if (sortingOrder === "asc") {
+        sortingOrder = null;
+      } else {
+        sortingOrder = "desc";
+      }
+    } else {
+      sortingField = field;
+      sortingOrder = "desc";
+    }
+  };
+
+  $: {
+    if (!$dividends.loading && $dividends.data) {
+      let _dividends = $dividends.data.Dividend.slice();
+      if (sortingOrder && sortingField) {
+        const fieldMap = {
+          ticker: "company.ticker",
+          amountPretax: "amount_pretax",
+          amountPosttax: "amount_posttax",
+          date: "date",
+        };
+        function resolve(path, obj, separator = ".") {
+          var properties = Array.isArray(path) ? path : path.split(separator);
+          return properties.reduce((prev, curr) => prev && prev[curr], obj);
+        }
+        const fieldName = fieldMap[sortingField];
+        _dividends.sort((a, b) => {
+          const aValue = resolve(fieldName, a);
+          const bValue = resolve(fieldName, b);
+          const result = sortingOrder === "asc" ? aValue > bValue : aValue < bValue;
+          return result ? 1 : -1;
+        });
+      }
+      sortedDividends = _dividends;
+    }
+  }
+
+  let curFocusedDiv = null;
 
   //   const updateDividend = async (id, set) => {
   //     const result = await $client.mutate({ mutation: UpdateDividendDocument, variables: { id, set } });
@@ -35,7 +84,7 @@
       variables: { id },
       update: (cache, { data: { delete_Dividend_by_pk } }) => {
         const deletedId = delete_Dividend_by_pk.id;
-        const existingDividends = cache.readQuery({
+        const existingDividends = cache.readQuery<GetDividendsQuery>({
           query: GetDividendsDoc,
           variables: { userId: $authState.user.uid },
         });
@@ -43,7 +92,7 @@
           query: GetDividendsDoc,
           variables: { userId: $authState.user.uid },
           data: {
-            Dividend: existingDividends?.Dividend.filter((div) => div?.id !== deletedId),
+            Dividend: existingDividends.Dividend.filter((div) => div?.id !== deletedId),
           },
         });
       },
@@ -125,15 +174,23 @@
 
     <thead class="border-b-2 border-gray-300 ">
       <tr>
-        <th class="text-left pl-2 md:pl-8">종목</th>
-        <th class="text-right keepall-word">세전 배당금</th>
-        <th class="text-right keepall-word">세후 배당금</th>
-        <th class="text-right pr-2 md:pr-8 keepall-word">배당 입금일</th>
+        <th class="text-left pl-2 md:pl-8">
+          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('ticker')}>종목</p>
+        </th>
+        <th class="text-right keepall-word">
+          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amountPretax')}>세전 배당금</p>
+        </th>
+        <th class="text-right keepall-word">
+          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('amountPosttax')}>세후 배당금</p>
+        </th>
+        <th class="text-right pr-2 md:pr-8 keepall-word">
+          <p class="inline-block cursor-pointer" on:click={() => onSortingChanged('date')}>배당입금일</p>
+        </th>
       </tr>
     </thead>
 
     <tbody>
-      {#each $dividends.data.Dividend as dividend, idx}
+      {#each sortedDividends as dividend, idx}
         <tr class={`h-16 tr-info-${idx % 2} cursor-pointer`} on:click={() => onDividendClicked(dividend)}>
           <td class="pl-2 md:pl-8">
             <div class="flex items-center w-full">

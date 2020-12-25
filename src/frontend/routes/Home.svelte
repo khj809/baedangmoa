@@ -5,25 +5,8 @@
 </script>
 
 <style>
-  .login-google,
-  .login-kakao {
-    width: 80%;
-    max-width: 290px;
-    margin-left: auto;
-    margin-right: auto;
+  .login-button {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.11), 0 1px 3px rgba(0, 0, 0, 0.18);
-  }
-
-  .login-google {
-    background: url("/images/icon_login_google.png") no-repeat 7% 50%;
-    background-size: 25px;
-    background-color: #fff;
-  }
-
-  .login-kakao {
-    background: url("/images/icon_login_kakao.png") no-repeat 5% 50%;
-    background-size: 35px;
-    background-color: #fee500;
   }
 </style>
 
@@ -45,14 +28,20 @@
         한눈에 보기 쉽게 정리하는 나만의 배당 가계부!
       </p>
       {#if $authState.status === 'out'}
-        <button
-          class="login-google block h-11 text-md text-gray-700 mt-8 mb-3 rounded-md bg-white"
-          on:click={signInWithGoogle}>
-          구글 로그인
-        </button>
-        <button class="login-kakao block h-11 text-md text-gray-700 rounded-md" on:click={signInWithKakao}>
-          카카오 로그인
-        </button>
+        <div class="flex flex-col items-center mt-8 space-y-3">
+          <button
+            class="login-button flex items-center w-60 h-11 text-md text-gray-700 rounded-md bg-white"
+            on:click={signInWithGoogle}>
+            <img class="ml-4 mr-3" alt="google-login" src="/images/icon_login_google.png" width={25} height={25} />
+            <span>구글 아이디로 로그인</span>
+          </button>
+          <button
+            class="login-button flex items-center w-60 h-11 text-md text-gray-700 rounded-md bg-kakao"
+            on:click={signInWithKakao}>
+            <img class="ml-4 mr-3" alt="kakao-login" src="/images/icon_login_kakao.png" width={25} height={25} />
+            <span>카카오 아이디로 로그인</span>
+          </button>
+        </div>
       {/if}
     </div>
   </div>

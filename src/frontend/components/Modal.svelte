@@ -1,4 +1,17 @@
-<script>
+<script lang="ts" context="module">
+  interface Callback {
+    onOpen?: () => void;
+    onClose?: () => void;
+    onOpened?: () => void;
+    onClosed?: () => void;
+  }
+  export interface ModalContext {
+    open: (NewComponent: any, newProps?: any, callback?: Callback) => void;
+    close: (callback?: Callback) => void;
+  }
+</script>
+
+<script lang="ts">
   import { setContext } from "svelte";
 
   const toVoid = () => {};
@@ -13,7 +26,7 @@
   let onOpened = toVoid;
   let onClosed = toVoid;
 
-  const open = (NewComponent, newProps = {}, callback = {}) => {
+  const open = (NewComponent, newProps: any = {}, callback: Callback = {}) => {
     Component = NewComponent;
     props = newProps;
     onOpen = callback.onOpen || toVoid;
@@ -22,7 +35,7 @@
     onClosed = callback.onClosed || toVoid;
   };
 
-  const close = (callback = {}) => {
+  const close = (callback: Callback = {}) => {
     onClose = callback.onClose || onClose;
     onClosed = callback.onClosed || onClosed;
     Component = null;
@@ -36,7 +49,7 @@
     }
   };
 
-  setContext("modal", { open, close });
+  setContext<ModalContext>("modal", { open, close });
 </script>
 
 {#if Component}
@@ -51,7 +64,7 @@
       on:outrostart={onClose}
       on:introend={onOpened}
       on:outroend={onClosed}>
-      <button on:click={close} class="absolute top-4 right-4 z-10">
+      <button on:click={() => close()} class="absolute top-4 right-4 z-10">
         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>

@@ -1,7 +1,11 @@
 module.exports = {
-  purge: ['./src/**/*.svelte'],
+  purge: ["./src/**/*.svelte"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        kakao: "#fee500",
+      },
+    },
   },
   variants: {},
   plugins: [],
