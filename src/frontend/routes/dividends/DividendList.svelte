@@ -11,6 +11,7 @@
   import Loader from "~/frontend/components/Loader.svelte";
   import SortIcon from "~/frontend/components/SortIcon.svelte";
   import AddDividend from "./AddDividend.svelte";
+  import EditDividend from "./EditDividend.svelte";
   import { thousandSeparate } from "~/frontend/utils/number";
   import { resolve } from "~/frontend/utils/object";
 
@@ -105,6 +106,10 @@
 
   const onCreateDividend = () => {
     openModal(AddDividend);
+  };
+
+  const onEditDividend = (dividend) => {
+    openModal(EditDividend, { dividend });
   };
 </script>
 
@@ -231,7 +236,8 @@
             <td colspan={4} class="p-0">
               <div class="flex" transition:slide={{ duration: 300 }}>
                 <button
-                  class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-blue-100 hover:bg-blue-200">
+                  class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-blue-100 hover:bg-blue-200"
+                  on:click={() => onEditDividend(dividend)}>
                   <svg
                     class="w-5 h-5 mr-2"
                     xmlns="http://www.w3.org/2000/svg"
