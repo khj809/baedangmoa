@@ -3,7 +3,8 @@
   import { slide } from "svelte/transition";
 
   import { authState } from "~/frontend/stores/auth";
-  import { GetDividends, GetDividendsDoc, UpdateDividend, DeleteDividend } from "~/frontend/graphql/codegen";
+  import { swipe } from "~/frontend/actions/swipe";
+  import { GetDividends, GetDividendsDoc, DeleteDividend } from "~/frontend/graphql/codegen";
   import type { GetDividendsQuery, dividendFragment } from "~/frontend/graphql/codegen";
   import Header from "~/frontend/components/Header.svelte";
   import CompanyInfo from "~/frontend/components/CompanyInfo.svelte";
@@ -14,6 +15,7 @@
   import EditDividend from "./EditDividend.svelte";
   import { thousandSeparate } from "~/frontend/utils/number";
   import { resolve } from "~/frontend/utils/object";
+  import App from "~/frontend/App.svelte";
 
   const openModal = getContext<ModalContext>("modal").open;
 
@@ -22,7 +24,8 @@
     KRW: "₩",
   };
 
-  let dividends = GetDividends({ userId: $authState.user?.uid });
+  let dividendsQuery = GetDividends({ userId: $authState.user?.uid });
+  $: dividends = !$dividendsQuery.loading ? $dividendsQuery.data?.Dividend : [];
 
   type SortingOrder = "asc" | "desc";
   type SortingField = "company.ticker" | "amount_pretax" | "amount_posttax" | "date";
@@ -46,30 +49,23 @@
   };
 
   $: {
-    if (!$dividends.loading && $dividends.data) {
-      let _dividends = $dividends.data.Dividend.slice();
-      if (sortingOrder && sortingField) {
-        _dividends.sort((a, b) => {
-          const aValue = resolve(a, sortingField);
-          const bValue = resolve(b, sortingField);
-          const result = sortingOrder === "asc" ? aValue > bValue : aValue < bValue;
-          return result ? 1 : -1;
-        });
-      }
-      sortedDividends = _dividends;
+    let _dividends = dividends.slice();
+    if (sortingOrder && sortingField) {
+      _dividends.sort((a, b) => {
+        const aValue = resolve(a, sortingField);
+        const bValue = resolve(b, sortingField);
+        const result = sortingOrder === "asc" ? aValue > bValue : aValue < bValue;
+        return result ? 1 : -1;
+      });
     }
+    sortedDividends = _dividends;
   }
 
-  let curFocusedDiv = null;
+  let currentPage = 0;
+  let itemsPerPage = 10;
+  $: totalPages = Math.ceil(dividends.length / itemsPerPage);
 
-  //   const updateDividend = async (id, set) => {
-  //     const result = await $client.mutate({ mutation: UpdateDividendDocument, variables: { id, set } });
-  //     if (result.errors) {
-  //       console.log(result.errors);
-  //       return;
-  //     }
-  //     dividends[dividends.findIndex((item) => item.id === id)] = result.data.update_Dividend_by_pk;
-  //   };
+  let curFocusedDiv = null;
 
   const _deleteDividend = DeleteDividend();
   const deleteDividend = async (id) => {
@@ -111,6 +107,17 @@
   const onEditDividend = (dividend) => {
     openModal(EditDividend, { dividend });
   };
+
+  let pageWidth;
+  const handleSwipe = (event: CustomEvent) => {
+    if (event.detail.dx >= Math.min(pageWidth / 2, 200)) {
+      if (event.detail.horizontal === "left") {
+        currentPage = currentPage < totalPages - 1 ? currentPage + 1 : currentPage;
+      } else {
+        currentPage = currentPage > 0 ? currentPage - 1 : currentPage;
+      }
+    }
+  };
 </script>
 
 <style>
@@ -119,13 +126,9 @@
     padding-bottom: 1rem;
     border: 1px solid #fff;
   }
-
-  .tr-info-1 {
-    background-color: #eee;
-  }
 </style>
 
-{#if !$dividends.loading}
+{#if !$dividendsQuery.loading}
   <Header />
 
   <div class="float-right mr-2 md:mr-8">
@@ -193,8 +196,8 @@
       </tr>
     </thead>
 
-    <tbody>
-      {#each sortedDividends as dividend, idx}
+    <tbody bind:offsetWidth={pageWidth} use:swipe on:swipeend={handleSwipe}>
+      {#each sortedDividends.slice(currentPage * itemsPerPage, currentPage * itemsPerPage + itemsPerPage) as dividend, idx}
         <tr
           class={`h-16 cursor-pointer ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
           on:click={() => onDividendClicked(dividend)}>
@@ -278,7 +281,7 @@
   </table>
 {/if}
 
-{#if $dividends.loading}
+{#if $dividendsQuery.loading}
   <div class="table w-full h-screen">
     <div class="table-cell text-center align-middle">
       <div class="inline-block align-top">

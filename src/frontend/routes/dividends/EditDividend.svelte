@@ -6,9 +6,8 @@
   import { cubicInOut } from "svelte/easing";
   import dayjs from "dayjs";
 
-  import { UpdateDividend, GetDividendsDoc } from "~/frontend/graphql/codegen";
-  import type { GetDividendsQuery, Dividend } from "~/frontend/graphql/codegen";
-  import { authState } from "~/frontend/stores/auth";
+  import { UpdateDividend } from "~/frontend/graphql/codegen";
+  import type { Dividend } from "~/frontend/graphql/codegen";
   import CompanySelector from "~/frontend/components/CompanySelector/index.svelte";
   import DatePicker from "~/frontend/components/DatePicker.svelte";
 
