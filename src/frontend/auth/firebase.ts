@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/functions";
+import "firebase/analytics";
 import { authState } from "~/frontend/stores/auth";
 
 let app: firebase.app.App;
@@ -20,6 +21,7 @@ if (!firebase.apps.length) {
   );
   // uncomment this when using emulator
   // app.functions().useEmulator("localhost", 5002);
+  app.analytics();
 } else {
   app = firebase.apps[0];
 }

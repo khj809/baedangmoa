@@ -108,9 +108,8 @@
     openModal(EditDividend, { dividend });
   };
 
-  let pageWidth;
   const handleSwipe = (event: CustomEvent) => {
-    if (event.detail.dx >= Math.min(pageWidth / 2, 200)) {
+    if (event.detail.dx >= 100) {
       if (event.detail.horizontal === "left") {
         currentPage = currentPage < totalPages - 1 ? currentPage + 1 : currentPage;
       } else {
@@ -196,7 +195,7 @@
       </tr>
     </thead>
 
-    <tbody bind:offsetWidth={pageWidth} use:swipe on:swipeend={handleSwipe}>
+    <tbody use:swipe on:swipeend={handleSwipe}>
       {#each sortedDividends.slice(currentPage * itemsPerPage, currentPage * itemsPerPage + itemsPerPage) as dividend, idx}
         <tr
           class={`h-16 cursor-pointer ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
