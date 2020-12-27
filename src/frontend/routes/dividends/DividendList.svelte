@@ -86,7 +86,7 @@
     });
     curFocusedDiv = null;
     if (currentPage > totalPages) {
-      currentPage = totalPages;
+      currentPage = Math.max(1, totalPages);
     }
   };
 
