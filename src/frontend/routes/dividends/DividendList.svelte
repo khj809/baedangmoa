@@ -11,11 +11,11 @@
   import type { ModalContext } from "~/frontend/components/Modal.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
   import SortIcon from "~/frontend/components/SortIcon.svelte";
+  import PageNavigator from "~/frontend/components/PageNavigator.svelte";
   import AddDividend from "./AddDividend.svelte";
   import EditDividend from "./EditDividend.svelte";
   import { thousandSeparate } from "~/frontend/utils/number";
   import { resolve } from "~/frontend/utils/object";
-  import App from "~/frontend/App.svelte";
 
   const openModal = getContext<ModalContext>("modal").open;
 
@@ -61,7 +61,7 @@
     sortedDividends = _dividends;
   }
 
-  let currentPage = 0;
+  let currentPage = 1;
   let itemsPerPage = 10;
   $: totalPages = Math.ceil(dividends.length / itemsPerPage);
 
@@ -111,9 +111,9 @@
   const handleSwipe = (event: CustomEvent) => {
     if (event.detail.dx >= 100) {
       if (event.detail.horizontal === "left") {
-        currentPage = currentPage < totalPages - 1 ? currentPage + 1 : currentPage;
+        currentPage = currentPage < totalPages ? currentPage + 1 : currentPage;
       } else {
-        currentPage = currentPage > 0 ? currentPage - 1 : currentPage;
+        currentPage = currentPage > 1 ? currentPage - 1 : currentPage;
       }
     }
   };
@@ -150,7 +150,7 @@
     </button>
   </div>
 
-  <table class="w-full table-fixed mb-10">
+  <table class="w-full table-fixed mb-5">
     <colgroup>
       <col width="35%" />
       <col width="20%" />
@@ -196,7 +196,7 @@
     </thead>
 
     <tbody use:swipe on:swipeend={handleSwipe}>
-      {#each sortedDividends.slice(currentPage * itemsPerPage, currentPage * itemsPerPage + itemsPerPage) as dividend, idx}
+      {#each sortedDividends.slice((currentPage - 1) * itemsPerPage, Math.min((currentPage - 1) * itemsPerPage + itemsPerPage, dividends.length + 1)) as dividend, idx}
         <tr
           class={`h-16 cursor-pointer ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
           on:click={() => onDividendClicked(dividend)}>
@@ -278,6 +278,9 @@
       {/each}
     </tbody>
   </table>
+  <div class="flex justify-center mb-10">
+    <PageNavigator bind:currentPage {totalPages} />
+  </div>
 {/if}
 
 {#if $dividendsQuery.loading}
