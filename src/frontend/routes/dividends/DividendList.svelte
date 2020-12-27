@@ -37,8 +37,6 @@
     if (sortingField === field) {
       if (sortingOrder === "desc") {
         sortingOrder = "asc";
-        // } else if (sortingOrder === "asc") {
-        //   sortingOrder = null;
       } else {
         sortingOrder = "desc";
       }
@@ -69,7 +67,7 @@
 
   const _deleteDividend = DeleteDividend();
   const deleteDividend = async (id) => {
-    _deleteDividend({
+    await _deleteDividend({
       variables: { id },
       update: (cache, { data: { delete_Dividend_by_pk } }) => {
         const deletedId = delete_Dividend_by_pk.id;
@@ -86,6 +84,10 @@
         });
       },
     });
+    curFocusedDiv = null;
+    if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
   };
 
   const onCompanyClicked = (company) => {

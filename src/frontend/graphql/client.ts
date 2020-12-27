@@ -8,6 +8,17 @@ import { authState } from "~/frontend/stores/auth";
 const generateClient = () => {
   const cache = new InMemoryCache({
     addTypename: true,
+    typePolicies: {
+      Query: {
+        fields: {
+          Dividend: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+          },
+        },
+      },
+    },
   });
   const asyncAuthLink = setContext(async () => {
     const token = await authState.get().user?.getIdToken();
