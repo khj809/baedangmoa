@@ -5,6 +5,9 @@ module.exports = {
       colors: {
         kakao: "#fee500",
       },
+      zIndex: {
+        "-1": "-1",
+      },
     },
   },
   variants: {
