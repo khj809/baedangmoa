@@ -38,7 +38,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
+    "@carbon/charts": "^0.41.14",
+    "@carbon/charts-svelte": "^0.41.14",
     "axios": "^0.21.0",
+    "carbon-components": "^10.25.0",
+    "d3": "5.x",
     "dayjs": "^1.9.7",
     "express": "^4.17.1",
     "firebase": "^8.2.0",

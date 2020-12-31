@@ -7,7 +7,6 @@
   import { GetDividends, GetDividendsDoc, DeleteDividend } from "~/frontend/graphql/codegen";
   import type { GetDividendsQuery, dividendFragment } from "~/frontend/graphql/codegen";
   import Header from "~/frontend/components/Header.svelte";
-  import CompanyInfo from "~/frontend/components/CompanyInfo.svelte";
   import type { ModalContext } from "~/frontend/components/Modal.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
   import SortIcon from "~/frontend/components/SortIcon.svelte";
@@ -88,10 +87,6 @@
     if (currentPage > totalPages) {
       currentPage = Math.max(1, totalPages);
     }
-  };
-
-  const onCompanyClicked = (company) => {
-    openModal(CompanyInfo, { company });
   };
 
   const onDividendClicked = (dividend) => {
@@ -205,9 +200,7 @@
                   alt={dividend.company.country}
                   src={`https://s3-symbol-logo.tradingview.com/country/${dividend.company.country}.svg`} />
                 <div class="no-scrollbar text-left overflow-scroll ml-4">
-                  <p class="inline-block font-bold" on:click={() => onCompanyClicked(dividend.company)}>
-                    {dividend.company.ticker}
-                  </p>
+                  <p class="inline-block font-bold">{dividend.company.ticker}</p>
                   <p class="text-xs whitespace-nowrap">{dividend.company.name}</p>
                 </div>
               </div>

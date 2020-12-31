@@ -8,9 +8,13 @@
 
   let showMenu = false;
 
-  const navigateToDividendListPage = () => {
+  const navigateToDividendStatPage = () => {
     showMenu = false;
     push("/dividends");
+  };
+  const navigateToDividendListPage = () => {
+    showMenu = false;
+    push("/dividends/list");
   };
 
   const signOutAndNavigateToHome = () => {
@@ -37,9 +41,15 @@
   use:clickOutside={onClickOutsideMenu} />
 {#if showMenu}
   <div
-    class="absolute right-0 bg-white border rounded border-gray-200 w-32 p-3 box-border text-center"
+    class="absolute right-0 bg-white border rounded border-gray-200 w-40 p-3 box-border text-center z-10"
     transition:slide={{ duration: 300 }}>
-    <button class="block w-full text-xl text-indigo-700" on:click={navigateToDividendListPage}>나의 배당</button>
-    <button class="block w-full text-xl text-indigo-700" on:click={signOutAndNavigateToHome}>로그아웃</button>
+    <button class="block w-full text-xl text-indigo-700 hover:bg-gray-300" on:click={navigateToDividendStatPage}>나의
+      배당현황</button>
+    <button
+      class="block w-full text-xl text-indigo-700 hover:bg-gray-300"
+      on:click={navigateToDividendListPage}>배당내역 관리</button>
+    <button
+      class="block w-full text-xl text-indigo-700 hover:bg-gray-300"
+      on:click={signOutAndNavigateToHome}>로그아웃</button>
   </div>
 {/if}
