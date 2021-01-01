@@ -6,6 +6,8 @@
 
     <title>배당모아</title>
     <link rel="manifest" href="/manifest.json" />
+    <meta name="description" content="배당모아 - 한눈에 보기 쉽게 정리하는 나만의 배당 가계부!" />
+    <meta name="theme-color" content="#4338ca" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -24,5 +26,15 @@
     <script type="module" src="/_dist_/index.js"></script>
   </head>
 
-  <body></body>
+  <body>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/js/service-worker.js").then((reg) => {
+            console.log("Service worker registered.", reg);
+          });
+        });
+      }
+    </script>
+  </body>
 </html>
