@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/database";
 import "firebase/functions";
 import "firebase/analytics";
 import { authState } from "~/frontend/stores/auth";
@@ -39,7 +40,7 @@ app.auth().onAuthStateChanged(async (user) => {
         token,
       });
     } else {
-      const metadataRef = firebase.database().ref("metadata/" + user.uid + "/refreshTime");
+      const metadataRef = app.database().ref("metadata/" + user.uid + "/refreshTime");
       metadataRef.on("value", async (data) => {
         if (!data.exists) return;
         const token = await user.getIdToken(true);

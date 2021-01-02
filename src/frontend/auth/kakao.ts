@@ -19,9 +19,9 @@ export const signInWithKakao = () => {
     success: (authObj) => {
       const token = authObj.access_token;
       authState.set({ status: "authenticating" });
-      kakaoAuth({ token }).then((res) => {
+      kakaoAuth({ token }).then(async (res) => {
         const firebaseToken = res.data.firebase_token;
-        app.auth().signInWithCustomToken(firebaseToken);
+        await app.auth().signInWithCustomToken(firebaseToken);
       });
     },
     fail: (err) => {
