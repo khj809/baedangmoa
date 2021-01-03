@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { LineChart } from "@carbon/charts-svelte";
+  import { LineChart, DonutChart } from "@carbon/charts-svelte";
   import axios from "axios";
   import dayjs from "dayjs";
 
@@ -41,10 +41,8 @@
   $: if (!!exchangeRates) {
     const monthlyRevenue = dividends.reduce((acc, div: dividendFragment) => {
       const month = dayjs(div.date).format("YYYY-MM");
-      let amountPretax = div.amount_pretax;
-      let amountPosttax = div.amount_posttax;
-      amountPretax /= exchangeRates[div.currency.symbol];
-      amountPosttax /= exchangeRates[div.currency.symbol];
+      let amountPretax = div.amount_pretax / exchangeRates[div.currency.symbol];
+      let amountPosttax = div.amount_posttax / exchangeRates[div.currency.symbol];
       if (!acc[month]) {
         acc[month] = {
           amountPretax,
@@ -66,20 +64,59 @@
   }
   $: totalRevenue = lineChartData.reduce((acc, data) => acc + data.value, 0).toFixed(2);
 
-  let options = {
+  $: lineChartOption = {
     animations: true,
     axes: {
       bottom: { title: "연월", mapsTo: "date", scaleType: "time" },
-      left: { title: "배당액($)", mapsTo: "value", scaleType: "linear" },
+      left: { title: `배당액(${baseCurrencySymbol})`, mapsTo: "value", scaleType: "linear" },
     },
     curve: "curveMonotoneX",
-    height: "400px",
+    height: "30vh",
     timeScale: {
       timeIntervalFormats: { monthly: { primary: "MMM yyyy", secondary: "MMM" } },
     },
     legend: {
       enabled: false,
     },
+  };
+
+  let donutChartData = [];
+  $: if (!!exchangeRates) {
+    const dividendPerStock = dividends.reduce((acc, div: dividendFragment) => {
+      let amountPretax = div.amount_pretax / exchangeRates[div.currency.symbol];
+      let amountPosttax = div.amount_posttax / exchangeRates[div.currency.symbol];
+      if (!acc[div.company.ticker]) {
+        acc[div.company.ticker] = {
+          amountPretax,
+          amountPosttax,
+        };
+      } else {
+        acc[div.company.ticker].amountPretax += amountPretax;
+        acc[div.company.ticker].amountPosttax += amountPosttax;
+      }
+      return acc;
+    }, {});
+    donutChartData = Object.entries(dividendPerStock)
+      .map(([company, val]) => {
+        return {
+          group: company,
+          value: showPosttax ? val.amountPosttax : val.amountPretax,
+        };
+      })
+      .sort((a, b) => (a.value > b.value ? 1 : -1));
+  }
+  $: donutChartOption = {
+    legend: {
+      alignment: "center",
+      position: "right",
+    },
+    donut: {
+      center: {
+        numberFormatter: (number) => `${baseCurrencySymbol}${thousandSeparate(number.toFixed(2))}`,
+      },
+      alignment: "center",
+    },
+    height: "40vh",
   };
 
   onMount(() => {
@@ -112,7 +149,12 @@
     </div>
     {#if lineChartData.length > 0}
       <div class="mt-5">
-        <LineChart data={lineChartData} {options} />
+        <LineChart data={lineChartData} options={lineChartOption} />
+      </div>
+    {/if}
+    {#if donutChartData.length > 0}
+      <div class="mt-5">
+        <DonutChart data={donutChartData} options={donutChartOption} />
       </div>
     {/if}
   </div>
