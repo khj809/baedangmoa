@@ -10,32 +10,41 @@
   import Header from "~/frontend/components/Header.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
   import Toggle from "~/frontend/components/Toggle.svelte";
+  import CurrencySelector from "~/frontend/components/CurrencySelector.svelte";
+  import { thousandSeparate } from "~/frontend/utils/number";
 
   let showPosttax = true;
   let dividendsQuery = GetDividends({ userId: $authState.user?.uid });
   $: dividends = !$dividendsQuery.loading ? $dividendsQuery.data?.Dividend : [];
 
-  let exchangeRates = null;
+  let _exchangeRates = null;
   const getExchangeRates = async () => {
     const res = await axios.get("https://api.exchangeratesapi.io/latest", {
       params: {
         base: "USD",
-        symbols: "KRW",
+        symbols: "USD,KRW",
       },
     });
-    exchangeRates = res.data;
+    _exchangeRates = res.data.rates;
   };
 
-  let chartData = [];
+  let baseCurrency;
+  let baseCurrencySymbol;
+  $: exchangeRates = !!_exchangeRates
+    ? Object.keys(_exchangeRates).reduce((acc, currency) => {
+        acc[currency] = _exchangeRates[currency] / _exchangeRates[baseCurrency];
+        return acc;
+      }, {})
+    : null;
+
+  let lineChartData = [];
   $: if (!!exchangeRates) {
     const monthlyRevenue = dividends.reduce((acc, div: dividendFragment) => {
       const month = dayjs(div.date).format("YYYY-MM");
       let amountPretax = div.amount_pretax;
       let amountPosttax = div.amount_posttax;
-      if (div.currency.symbol !== "USD") {
-        amountPretax /= exchangeRates.rates[div.currency.symbol];
-        amountPosttax /= exchangeRates.rates[div.currency.symbol];
-      }
+      amountPretax /= exchangeRates[div.currency.symbol];
+      amountPosttax /= exchangeRates[div.currency.symbol];
       if (!acc[month]) {
         acc[month] = {
           amountPretax,
@@ -47,7 +56,7 @@
       }
       return acc;
     }, {});
-    chartData = Object.entries(monthlyRevenue).map(([month, val]) => {
+    lineChartData = Object.entries(monthlyRevenue).map(([month, val]) => {
       return {
         group: "배당액",
         date: month,
@@ -55,7 +64,7 @@
       };
     });
   }
-  $: totalRevenue = chartData.reduce((acc, data) => acc + data.value, 0).toFixed(2);
+  $: totalRevenue = lineChartData.reduce((acc, data) => acc + data.value, 0).toFixed(2);
 
   let options = {
     animations: true,
@@ -93,14 +102,17 @@
   <div class="mx-4 md:mx-8">
     <div class="w-full flex justify-between mt-5">
       <div>
-        <p class="text-lg font-bold">총 배당수익</p>
-        <p class="text-5xl font-bold text-indigo-700">${totalRevenue}</p>
+        <p class="text-lg font-bold">총 배당수익 <span class="text-gray-400">(환율적용 합산)</span></p>
+        <p class="text-5xl font-bold text-indigo-700">{baseCurrencySymbol}{thousandSeparate(totalRevenue)}</p>
       </div>
-      <Toggle bind:toggled={showPosttax} labelToggled="세후" labelUntoggled="세전" />
+      <div class="flex flex-col space-y-2">
+        <Toggle bind:toggled={showPosttax} labelToggled="세후" labelUntoggled="세전" />
+        <CurrencySelector bind:selectedCurrency={baseCurrency} bind:selectedCurrencySymbol={baseCurrencySymbol} />
+      </div>
     </div>
-    {#if chartData.length > 0}
+    {#if lineChartData.length > 0}
       <div class="mt-5">
-        <LineChart data={chartData} {options} />
+        <LineChart data={lineChartData} {options} />
       </div>
     {/if}
   </div>
