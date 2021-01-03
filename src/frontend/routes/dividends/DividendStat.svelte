@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   import { LineChart, DonutChart } from "@carbon/charts-svelte";
   import axios from "axios";
@@ -7,6 +7,7 @@
   import { GetDividends } from "~/frontend/graphql/codegen";
   import type { dividendFragment } from "~/frontend/graphql/codegen";
   import { authState } from "~/frontend/stores/auth";
+  import { exchangeRates, getConvertedExchangeRates } from "~/frontend/stores/exchangeRates";
   import Header from "~/frontend/components/Header.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
   import Toggle from "~/frontend/components/Toggle.svelte";
@@ -17,32 +18,34 @@
   let dividendsQuery = GetDividends({ userId: $authState.user?.uid });
   $: dividends = !$dividendsQuery.loading ? $dividendsQuery.data?.Dividend : [];
 
-  let _exchangeRates = null;
   const getExchangeRates = async () => {
-    const res = await axios.get("https://api.exchangeratesapi.io/latest", {
-      params: {
-        base: "USD",
-        symbols: "USD,KRW",
-      },
-    });
-    _exchangeRates = res.data.rates;
+    if (!$exchangeRates) {
+      const res = await axios.get("https://api.exchangeratesapi.io/latest", {
+        params: {
+          base: "USD",
+          symbols: "USD,KRW",
+        },
+      });
+      exchangeRates.set(res.data.rates);
+    }
   };
 
   let baseCurrency;
   let baseCurrencySymbol;
-  $: exchangeRates = !!_exchangeRates
-    ? Object.keys(_exchangeRates).reduce((acc, currency) => {
-        acc[currency] = _exchangeRates[currency] / _exchangeRates[baseCurrency];
-        return acc;
-      }, {})
-    : null;
+  $: convertedExchangeRates = getConvertedExchangeRates(baseCurrency);
 
   let lineChartData = [];
   $: if (!!exchangeRates) {
-    const monthlyRevenue = dividends.reduce((acc, div: dividendFragment) => {
+    interface MonthlyDividend {
+      [month: string]: {
+        amountPretax: number;
+        amountPosttax: number;
+      };
+    }
+    const monthlyDividend: MonthlyDividend = dividends.reduce((acc, div: dividendFragment) => {
       const month = dayjs(div.date).format("YYYY-MM");
-      let amountPretax = div.amount_pretax / exchangeRates[div.currency.symbol];
-      let amountPosttax = div.amount_posttax / exchangeRates[div.currency.symbol];
+      let amountPretax = div.amount_pretax / $convertedExchangeRates[div.currency.symbol];
+      let amountPosttax = div.amount_posttax / $convertedExchangeRates[div.currency.symbol];
       if (!acc[month]) {
         acc[month] = {
           amountPretax,
@@ -54,7 +57,7 @@
       }
       return acc;
     }, {});
-    lineChartData = Object.entries(monthlyRevenue).map(([month, val]) => {
+    lineChartData = Object.entries(monthlyDividend).map(([month, val]) => {
       return {
         group: "배당액",
         date: month,
@@ -82,9 +85,15 @@
 
   let donutChartData = [];
   $: if (!!exchangeRates) {
-    const dividendPerStock = dividends.reduce((acc, div: dividendFragment) => {
-      let amountPretax = div.amount_pretax / exchangeRates[div.currency.symbol];
-      let amountPosttax = div.amount_posttax / exchangeRates[div.currency.symbol];
+    interface DividendPerStock {
+      [company: string]: {
+        amountPretax: number;
+        amountPosttax: number;
+      };
+    }
+    const dividendPerStock: DividendPerStock = dividends.reduce((acc, div: dividendFragment) => {
+      let amountPretax = div.amount_pretax / $convertedExchangeRates[div.currency.symbol];
+      let amountPosttax = div.amount_posttax / $convertedExchangeRates[div.currency.symbol];
       if (!acc[div.company.ticker]) {
         acc[div.company.ticker] = {
           amountPretax,
@@ -103,7 +112,7 @@
           value: showPosttax ? val.amountPosttax : val.amountPretax,
         };
       })
-      .sort((a, b) => (a.value > b.value ? 1 : -1));
+      .sort((a, b) => (a.value < b.value ? 1 : -1));
   }
   $: donutChartOption = {
     legend: {
