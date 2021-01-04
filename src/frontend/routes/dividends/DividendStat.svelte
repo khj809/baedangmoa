@@ -73,8 +73,13 @@
       bottom: { title: "연월", mapsTo: "date", scaleType: "time" },
       left: { title: `배당액(${baseCurrencySymbol})`, mapsTo: "value", scaleType: "linear" },
     },
-    curve: "curveMonotoneX",
-    height: "30vh",
+    color: {
+      scale: {
+        배당액: "#4338ca",
+      },
+    },
+    // curve: "curveMonotoneX",
+    height: "35vh",
     timeScale: {
       timeIntervalFormats: { monthly: { primary: "MMM yyyy", secondary: "MMM" } },
     },
@@ -145,24 +150,25 @@
     <div class="mx-auto text-center text-gray-500 font-semibold mt-6">배당 목록을 조회하고 있습니다.</div>
   </div>
 {:else}
-  <div class="mx-4 md:mx-8">
-    <div class="w-full flex justify-between mt-5">
+  <div class="px-4 md:px-8 mt-10">
+    <div class="w-full flex justify-between items-end">
       <div>
-        <p class="text-lg font-bold">총 배당수익 <span class="text-gray-400">(환율적용 합산)</span></p>
-        <p class="text-5xl font-bold text-indigo-700">{baseCurrencySymbol}{thousandSeparate(totalRevenue)}</p>
+        <p class="text-base mb-2">총 배당수익 <span class="text-gray-500">(환율적용 합산)</span></p>
+        <p class="text-4xl text-indigo-700">{baseCurrencySymbol}{thousandSeparate(totalRevenue)}</p>
       </div>
-      <div class="flex flex-col space-y-2">
+      <div class="flex items-center space-x-2">
         <Toggle bind:toggled={showPosttax} labelToggled="세후" labelUntoggled="세전" />
         <CurrencySelector bind:selectedCurrency={baseCurrency} bind:selectedCurrencySymbol={baseCurrencySymbol} />
       </div>
     </div>
+
     {#if lineChartData.length > 0}
-      <div class="mt-5">
+      <div class="mt-8">
         <LineChart data={lineChartData} options={lineChartOption} />
       </div>
     {/if}
     {#if donutChartData.length > 0}
-      <div class="mt-5">
+      <div class="my-10">
         <DonutChart data={donutChartData} options={donutChartOption} />
       </div>
     {/if}

@@ -36,22 +36,22 @@
   <div class="table-cell text-center align-middle">
     <div class="inline-block align-top p-2">
       <h1 class="font-extrabold text-center text-5xl text-indigo-700 pb-3">배당모아</h1>
-      <p class="intro-text text-center text-md md:text-lg text-gray-500 font-semibold break-keepall">
+      <p class="intro-text text-center text-base md:text-lg text-gray-500 font-semibold break-keepall">
         한눈에 보기 쉽게 정리하는 나만의 배당 가계부!
       </p>
       {#if !$loggedIn}
         <div class="flex flex-col items-center mt-8 space-y-3">
           <button
-            class="login-button flex items-center w-60 h-11 text-md text-gray-700 rounded-md bg-white"
+            class="login-button flex justify-center items-center w-60 h-11 text-base text-gray-700 rounded-md bg-white"
             on:click={signInWithGoogle}>
-            <img class="ml-4 mr-3" alt="google-login" src="/images/icon_login_google.png" width={25} height={25} />
-            <span>구글 아이디로 로그인</span>
+            <img class="mr-2" alt="google-login" src="/images/icon_login_google.png" width={21} height={21} />
+            <span class="text-sm">구글 아이디로 로그인</span>
           </button>
           <button
-            class="login-button flex items-center w-60 h-11 text-md text-gray-700 rounded-md bg-kakao"
+            class="login-button flex justify-center items-center w-60 h-11 text-base text-gray-700 rounded-md bg-kakao"
             on:click={signInWithKakao}>
-            <img class="ml-4 mr-3" alt="kakao-login" src="/images/icon_login_kakao.png" width={25} height={25} />
-            <span>카카오 아이디로 로그인</span>
+            <img class="mr-2" alt="kakao-login" src="/images/icon_login_kakao.png" width={21} height={21} />
+            <span class="text-sm">카카오 아이디로 로그인</span>
           </button>
         </div>
       {/if}

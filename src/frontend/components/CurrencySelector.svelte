@@ -34,19 +34,27 @@
     use:clickOutside={() => {
       showOptions = false;
     }}
-    class="w-20 h-8 flex flex-col items-center text-center bg-indigo-700 rounded-full cursor-pointer"
+    class="flex justify-between items-center w-max px-2 py-1 text-center border border-gray-300 rounded-sm cursor-pointer"
     on:click={() => {
       showOptions = !showOptions;
     }}>
-    <p class="w-full text-2xl text-white text-center">{selectedItem.symbol}</p>
+    <span class="text-sm md:text-base">{selectedItem.symbol}</span>
+    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20 " fill="currentColor">
+      <path
+        fill-rule="evenodd"
+        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+        clip-rule="evenodd" />
+    </svg>
   </div>
   {#if showOptions}
     <div
-      class="absolute w-max top-10 right-0 z-10 bg-white border border-gray-300 rounded-sm cursor-pointer"
+      class="absolute w-max top-9 right-0 z-10 shadow-md bg-white border border-gray-300 rounded-sm cursor-pointer"
       transition:slide>
       <ul>
         {#each items as item, idx}
-          <li class="pl-2 pr-2 pt-1 pb-1 text-xl hover:bg-indigo-100" on:click={() => onSelectOption(idx)}>
+          <li
+            class="text-sm md:text-base text-center px-2 py-1.5 hover:bg-indigo-50"
+            on:click={() => onSelectOption(idx)}>
             {item.label}
           </li>
         {/each}

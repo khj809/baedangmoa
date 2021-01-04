@@ -40,16 +40,15 @@
   on:click={toggleShowMenu}
   use:clickOutside={onClickOutsideMenu} />
 {#if showMenu}
-  <div
-    class="absolute right-0 bg-white border rounded border-gray-200 w-40 p-3 box-border text-center z-10"
+  <ul
+    class="absolute w-max top-12 right-0 text-center list-none shadow-md bg-white border rounded-sm border-gray-200 box-border z-10 cursor-pointer"
     transition:slide={{ duration: 300 }}>
-    <button class="block w-full text-xl text-indigo-700 hover:bg-gray-300" on:click={navigateToDividendStatPage}>나의
-      배당현황</button>
-    <button
-      class="block w-full text-xl text-indigo-700 hover:bg-gray-300"
-      on:click={navigateToDividendListPage}>배당내역 관리</button>
-    <button
-      class="block w-full text-xl text-indigo-700 hover:bg-gray-300"
-      on:click={signOutAndNavigateToHome}>로그아웃</button>
-  </div>
+    <li class="text-sm md:text-base px-5 py-2 hover:bg-indigo-50" on:click={navigateToDividendStatPage}>
+      나의 배당현황
+    </li>
+    <li class="text-sm md:text-base px-5 py-2 hover:bg-indigo-50" on:click={navigateToDividendListPage}>
+      배당내역 관리
+    </li>
+    <li class="text-sm md:text-base px-5 py-2 hover:bg-indigo-50" on:click={signOutAndNavigateToHome}>로그아웃</li>
+  </ul>
 {/if}

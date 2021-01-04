@@ -26,7 +26,7 @@
 
 <nav class="relative z-0 inline-flex shadow-sm -space-x-px" aria-label="Pagination">
   <button
-    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-100"
     on:click={() => onPageChanged(Math.max(currentPage - 1, 1))}>
     <span class="sr-only">Previous</span>
     <!-- Heroicon name: chevron-left -->
@@ -39,11 +39,11 @@
   </button>
   {#each range(minPageNum, maxPageNum + 1, 1) as i}
     <button
-      class={`relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 ${i === currentPage ? 'text-indigo-700 font-bold' : 'text-black'}`}
+      class={`relative inline-flex items-center font-medium text-sm px-4 py-2 border ${i === currentPage ? 'text-white border-indigo-400 bg-indigo-700' : 'text-gray-500 border-gray-300 bg-white hover:bg-gray-100'}`}
       on:click={() => onPageChanged(i)}>{i}</button>
   {/each}
   <button
-    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-100"
     on:click={() => onPageChanged(Math.min(currentPage + 1, totalPages))}>
     <span class="sr-only">Next</span>
     <!-- Heroicon name: chevron-right -->

@@ -117,17 +117,15 @@
 </script>
 
 <style>
-  th {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border: 1px solid #fff;
+  .th-width {
+    max-width: calc(100% - 1.25rem);
   }
 </style>
 
 <Header />
-<div class="float-right mr-2 md:mr-8">
+<div class="float-right mr-2 md:mr-8 mt-10 mb-4">
   <button
-    class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold my-4 py-2 px-2 rounded-sm bg-indigo-100 hover:bg-indigo-200"
+    class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold py-2 px-2 shadow-md rounded-sm bg-indigo-100 hover:bg-indigo-200"
     on:click={onCreateDividend}>
     <svg class="w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="rgba(79, 70, 229)">
       <path
@@ -142,7 +140,7 @@
 
 {#if !$dividendsQuery.loading}
   {#if dividends.length > 0}
-    <table class="w-full table-fixed mb-5">
+    <table class="w-full table-fixed">
       <colgroup>
         <col width="35%" />
         <col width="20%" />
@@ -150,38 +148,42 @@
         <col width="25%" />
       </colgroup>
 
-      <thead class="border-b-2 border-gray-300 ">
+      <thead class="border-b-2 border-gray-300">
         <tr>
-          <th class="text-left pl-2 md:pl-8">
-            <div class="flex justify-start cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>
-              <p class="inline-block">종목</p>
+          <th class="text-left py-2 pl-2 md:pl-8">
+            <div class="flex items-center cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>
+              <span class="th-width">종목</span>
               {#if sortingField === 'company.ticker'}
                 <SortIcon order={sortingOrder} />
               {/if}
             </div>
           </th>
-          <th class="text-right break-keepall">
-            <div class="flex justify-end cursor-pointer" on:click={() => onSortingChanged('amount_pretax')}>
+          <th class="text-right py-2 break-keepall">
+            <div
+              class="flex justify-end items-center cursor-pointer"
+              on:click={() => onSortingChanged('amount_pretax')}>
               {#if sortingField === 'amount_pretax'}
                 <SortIcon order={sortingOrder} />
               {/if}
-              <p>세전 배당금</p>
+              <span class="th-width">세전<em class="hidden md:inline not-italic">배당금</em></span>
             </div>
           </th>
-          <th class="text-right break-keepall">
-            <div class="flex justify-end cursor-pointer" on:click={() => onSortingChanged('amount_posttax')}>
+          <th class="text-right py-2 break-keepall">
+            <div
+              class="flex justify-end items-center cursor-pointer"
+              on:click={() => onSortingChanged('amount_posttax')}>
               {#if sortingField === 'amount_posttax'}
                 <SortIcon order={sortingOrder} />
               {/if}
-              <p>세후 배당금</p>
+              <span class="th-width">세후<em class="hidden md:inline not-italic">배당금</em></span>
             </div>
           </th>
-          <th class="text-right pr-2 md:pr-8 break-keepall">
-            <div class="flex justify-end cursor-pointer" on:click={() => onSortingChanged('date')}>
+          <th class="text-right py-2 pr-2 md:pr-8 break-keepall">
+            <div class="flex justify-end items-center cursor-pointer" on:click={() => onSortingChanged('date')}>
               {#if sortingField === 'date'}
                 <SortIcon order={sortingOrder} />
               {/if}
-              <p>배당입금일</p>
+              <span class="th-width"><em class="hidden md:inline not-italic">배당</em>입금일</span>
             </div>
           </th>
         </tr>
@@ -220,7 +222,7 @@
               </div>
             </td>
             <td class="text-right pr-2 md:pr-8">
-              <p class="text-sm md:text-base text-right">{dividend.date}</p>
+              <p class="text-xs md:text-base text-right">{dividend.date}</p>
             </td>
           </tr>
           {#if curFocusedDiv === dividend.id}
@@ -268,7 +270,7 @@
         {/each}
       </tbody>
     </table>
-    <div class="flex justify-center mb-10">
+    <div class="flex justify-center mt-10 mb-5">
       <PageNavigator bind:currentPage {totalPages} />
     </div>
   {:else}
