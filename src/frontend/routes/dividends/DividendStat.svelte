@@ -7,7 +7,7 @@
   import { GetDividends } from "~/frontend/graphql/codegen";
   import type { dividendFragment } from "~/frontend/graphql/codegen";
   import { authState } from "~/frontend/stores/auth";
-  import { exchangeRates, getConvertedExchangeRates } from "~/frontend/stores/exchangeRates";
+  import { exchangeRates } from "~/frontend/stores/exchangeRates";
   import Header from "~/frontend/components/Header.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
   import Toggle from "~/frontend/components/Toggle.svelte";
@@ -32,10 +32,16 @@
 
   let baseCurrency;
   let baseCurrencySymbol;
-  $: convertedExchangeRates = getConvertedExchangeRates(baseCurrency);
+  $: convertedExchangeRates =
+    !!baseCurrency && !!$exchangeRates
+      ? Object.keys($exchangeRates).reduce((acc, currency) => {
+          acc[currency] = $exchangeRates[currency] / $exchangeRates[baseCurrency];
+          return acc;
+        }, {})
+      : null;
 
   let lineChartData = [];
-  $: if (!!$exchangeRates) {
+  $: if (!!convertedExchangeRates) {
     interface MonthlyDividend {
       [month: string]: {
         amountPretax: number;
@@ -44,8 +50,8 @@
     }
     const monthlyDividend: MonthlyDividend = dividends.reduce((acc, div: dividendFragment) => {
       const month = dayjs(div.date).format("YYYY-MM");
-      let amountPretax = div.amount_pretax / $convertedExchangeRates[div.currency.symbol];
-      let amountPosttax = div.amount_posttax / $convertedExchangeRates[div.currency.symbol];
+      let amountPretax = div.amount_pretax / convertedExchangeRates[div.currency.symbol];
+      let amountPosttax = div.amount_posttax / convertedExchangeRates[div.currency.symbol];
       if (!acc[month]) {
         acc[month] = {
           amountPretax,
@@ -89,7 +95,7 @@
   };
 
   let donutChartData = [];
-  $: if (!!$exchangeRates) {
+  $: if (!!convertedExchangeRates) {
     interface DividendPerStock {
       [company: string]: {
         amountPretax: number;
@@ -97,8 +103,8 @@
       };
     }
     const dividendPerStock: DividendPerStock = dividends.reduce((acc, div: dividendFragment) => {
-      let amountPretax = div.amount_pretax / $convertedExchangeRates[div.currency.symbol];
-      let amountPosttax = div.amount_posttax / $convertedExchangeRates[div.currency.symbol];
+      let amountPretax = div.amount_pretax / convertedExchangeRates[div.currency.symbol];
+      let amountPosttax = div.amount_posttax / convertedExchangeRates[div.currency.symbol];
       if (!acc[div.company.ticker]) {
         acc[div.company.ticker] = {
           amountPretax,
