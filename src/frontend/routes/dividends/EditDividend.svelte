@@ -9,6 +9,7 @@
   import { UpdateDividend } from "~/frontend/graphql/codegen";
   import type { Dividend } from "~/frontend/graphql/codegen";
   import CompanySelector from "~/frontend/components/CompanySelector/index.svelte";
+  import CurrencySelector from "~/frontend/components/CurrencySelector.svelte";
   import DatePicker from "~/frontend/components/DatePicker.svelte";
 
   const { close } = getContext("modal");
@@ -58,11 +59,8 @@
   <form on:submit|preventDefault={onSubmit} class="mt-12 px-4 md:px-8">
     <CompanySelector bind:selectedCompany />
 
-    <div class="flex mt-8 border-b border-gray-300">
-      <select class="p-2.5 cursor-pointer bg-white" name="currency_symbol" bind:value={selectedCurrency} required>
-        <option value="USD" default>$</option>
-        <option value="KRW">₩</option>
-      </select>
+    <div class="flex items-center mt-8 border-b border-gray-300">
+      <CurrencySelector bind:selectedCurrency menuAlign="left" showBorder={false} />
       <input
         class="w-full p-2.5"
         type="number"
@@ -73,11 +71,8 @@
         required />
     </div>
 
-    <div class="flex mt-8 border-b border-gray-300">
-      <select class="p-2.5 cursor-pointer bg-white" name="currency_symbol" bind:value={selectedCurrency} required>
-        <option value="USD" default>$</option>
-        <option value="KRW">₩</option>
-      </select>
+    <div class="flex items-center mt-8 border-b border-gray-300">
+      <CurrencySelector bind:selectedCurrency menuAlign="left" showBorder={false} />
       <input
         class="w-full p-2.5"
         type="number"

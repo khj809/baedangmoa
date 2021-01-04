@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
   export let selectedCurrency = "USD";
   export let selectedCurrencySymbol = "$";
+  export let showBorder: boolean = true;
+  export let menuAlign: "right" | "left" = "right";
 
   import { slide } from "svelte/transition";
   import clickOutside from "~/frontend/actions/clickOutside";
@@ -34,7 +36,7 @@
     use:clickOutside={() => {
       showOptions = false;
     }}
-    class="flex justify-between items-center w-max px-2 py-1 text-center border border-gray-300 rounded-sm cursor-pointer"
+    class={`flex justify-between items-center w-max px-2 py-1 text-center ${showBorder ? 'border' : 'border-0'} border-gray-300 rounded-sm cursor-pointer`}
     on:click={() => {
       showOptions = !showOptions;
     }}>
@@ -48,7 +50,7 @@
   </div>
   {#if showOptions}
     <div
-      class="absolute w-max top-9 right-0 z-10 shadow-md bg-white border border-gray-300 rounded-sm cursor-pointer"
+      class={`currency-menu absolute w-max top-9 ${menuAlign}-0 z-10 shadow-md bg-white border border-gray-300 rounded-sm cursor-pointer`}
       transition:slide>
       <ul>
         {#each items as item, idx}
