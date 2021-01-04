@@ -35,7 +35,7 @@
   $: convertedExchangeRates = getConvertedExchangeRates(baseCurrency);
 
   let lineChartData = [];
-  $: if (!!exchangeRates) {
+  $: if (!!$exchangeRates) {
     interface MonthlyDividend {
       [month: string]: {
         amountPretax: number;
@@ -89,7 +89,7 @@
   };
 
   let donutChartData = [];
-  $: if (!!exchangeRates) {
+  $: if (!!$exchangeRates) {
     interface DividendPerStock {
       [company: string]: {
         amountPretax: number;
