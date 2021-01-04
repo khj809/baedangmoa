@@ -151,7 +151,7 @@
       <thead class="border-b-2 border-gray-300">
         <tr>
           <th class="text-left py-2 pl-2 md:pl-8">
-            <div class="flex items-center cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>
+            <div class="inline-block align-middle cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>
               <span class="th-width">종목</span>
               {#if sortingField === 'company.ticker'}
                 <SortIcon order={sortingOrder} />
@@ -160,7 +160,7 @@
           </th>
           <th class="text-right py-2 break-keepall">
             <div
-              class="flex justify-end items-center cursor-pointer"
+              class="inline-block align-middle text-right cursor-pointer"
               on:click={() => onSortingChanged('amount_pretax')}>
               {#if sortingField === 'amount_pretax'}
                 <SortIcon order={sortingOrder} />
@@ -170,7 +170,7 @@
           </th>
           <th class="text-right py-2 break-keepall">
             <div
-              class="flex justify-end items-center cursor-pointer"
+              class="inline-block align-middle text-right cursor-pointer"
               on:click={() => onSortingChanged('amount_posttax')}>
               {#if sortingField === 'amount_posttax'}
                 <SortIcon order={sortingOrder} />
@@ -179,7 +179,7 @@
             </div>
           </th>
           <th class="text-right py-2 pr-2 md:pr-8 break-keepall">
-            <div class="flex justify-end items-center cursor-pointer" on:click={() => onSortingChanged('date')}>
+            <div class="inline-block align-middle text-right cursor-pointer" on:click={() => onSortingChanged('date')}>
               {#if sortingField === 'date'}
                 <SortIcon order={sortingOrder} />
               {/if}
