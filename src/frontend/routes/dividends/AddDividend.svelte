@@ -57,6 +57,19 @@
   };
 </script>
 
+<style global>
+  @media all and (max-width: 479px) {
+    .contents-wrapper.svelte-mc1z8c.svelte-mc1z8c {
+      position: fixed !important;
+      transform: none !important;
+      top: unset !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+    }
+  }
+</style>
+
 <div transition:scale={{ duration: 300, easing: cubicInOut }}>
   <h2 class="relative text-xl text-center py-4 border-b border-gray-300">새 배당 추가</h2>
 

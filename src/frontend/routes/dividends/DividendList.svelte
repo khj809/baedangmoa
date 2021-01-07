@@ -207,21 +207,17 @@
                 </div>
               </div>
             </td>
-            <td>
-              <div class="no-scrollbar text-right">
-                <p class="text-sm font-bold md:text-base">
-                  {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_pretax)}
-                </p>
-              </div>
+            <td class="pl-1.5">
+              <p class="text-sm md:text-base text-right font-bold no-scrollbar overflow-scroll">
+                {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_pretax)}
+              </p>
             </td>
-            <td>
-              <div class="no-scrollbar text-right">
-                <p class="text-sm font-bold md:text-base">
-                  {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_posttax)}
-                </p>
-              </div>
+            <td class="pl-1.5">
+              <p class="text-sm md:text-base text-right font-bold no-scrollbar overflow-scroll">
+                {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_posttax)}
+              </p>
             </td>
-            <td class="text-right pr-2 md:pr-8">
+            <td class="text-right pl-1.5 pr-2 md:pr-8">
               <p class="text-xs md:text-base text-right">{dividend.date}</p>
             </td>
           </tr>

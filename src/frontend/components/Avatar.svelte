@@ -33,12 +33,19 @@
   };
 </script>
 
-<img
-  class="rounded-full w-10 h-10 cursor-pointer"
-  alt="profile"
-  src={$authState.user?.photoURL}
-  on:click={toggleShowMenu}
-  use:clickOutside={onClickOutsideMenu} />
+<div class="cursor-pointer" on:click={toggleShowMenu} use:clickOutside={onClickOutsideMenu}>
+  <img class="inline-block vertical-center rounded-full w-10 h-10" alt="profile" src={$authState.user?.photoURL} />
+  <svg
+    class="inline-block vertical-center w-4 h-4"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20 "
+    fill="currentColor">
+    <path
+      fill-rule="evenodd"
+      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+      clip-rule="evenodd" />
+  </svg>
+</div>
 {#if showMenu}
   <ul
     class="absolute w-max top-12 right-0 text-center list-none shadow-md bg-white border rounded-sm border-gray-200 box-border z-10 cursor-pointer"

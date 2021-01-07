@@ -157,16 +157,14 @@
   </div>
 {:else}
   <div class="px-4 md:px-8 mt-10">
-    <div class="w-full flex justify-between items-end">
-      <div>
-        <p class="text-base mb-2">총 배당수익 <span class="text-gray-500">(환율적용 합산)</span></p>
-        <p class="text-4xl text-indigo-700">{baseCurrencySymbol}{thousandSeparate(totalRevenue)}</p>
-      </div>
+    <div class="w-full flex justify-between items-center">
+      <p class="text-base mb-2">총 배당수익 <span class="text-gray-500">(환율적용 합산)</span></p>
       <div class="flex items-center space-x-2">
         <Toggle bind:toggled={showPosttax} labelToggled="세후" labelUntoggled="세전" />
         <CurrencySelector bind:selectedCurrency={baseCurrency} bind:selectedCurrencySymbol={baseCurrencySymbol} />
       </div>
     </div>
+    <p class="text-4xl text-indigo-700 break-all">{baseCurrencySymbol}{thousandSeparate(totalRevenue)}</p>
 
     {#if lineChartData.length > 0}
       <div class="mt-8">
