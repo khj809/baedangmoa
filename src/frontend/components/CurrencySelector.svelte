@@ -40,7 +40,7 @@
     on:click={() => {
       showOptions = !showOptions;
     }}>
-    <span class="text-sm md:text-base">{selectedItem.symbol}</span>
+    <span class="text-sm md:text-base mr-1.5">{selectedItem.symbol}</span>
     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20 " fill="currentColor">
       <path
         fill-rule="evenodd"
@@ -55,7 +55,7 @@
       <ul>
         {#each items as item, idx}
           <li
-            class="text-sm md:text-base text-center px-2 py-1.5 hover:bg-indigo-50"
+            class="text-sm md:text-base text-center px-2.5 py-1.5 hover:bg-indigo-50"
             on:click={() => onSelectOption(idx)}>
             {item.label}
           </li>
