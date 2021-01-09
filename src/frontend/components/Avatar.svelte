@@ -5,6 +5,7 @@
   import { authState } from "~/frontend/stores/auth";
   import { signOut } from "~/frontend/auth";
   import clickOutside from "~/frontend/actions/clickOutside";
+  import safariOverflowHidden from "~/frontend/actions/safariOverflowHidden";
 
   let showMenu = false;
 
@@ -49,13 +50,16 @@
 {#if showMenu}
   <ul
     class="absolute w-max top-12 right-0 text-center list-none shadow-md bg-white border rounded-sm border-gray-200 box-border z-10 cursor-pointer"
-    transition:slide={{ duration: 300 }}>
-    <li class="text-sm md:text-base px-5 py-2 hover:bg-indigo-50" on:click={navigateToDividendStatPage}>
-      나의 배당현황
+    transition:slide={{ duration: 300 }}
+    use:safariOverflowHidden>
+    <li class="px-5 py-2 hover:bg-indigo-50" on:click={navigateToDividendStatPage}>
+      <p class="text-sm md:text-base whitespace-nowrap">나의 배당현황</p>
     </li>
-    <li class="text-sm md:text-base px-5 py-2 hover:bg-indigo-50" on:click={navigateToDividendListPage}>
-      배당내역 관리
+    <li class="px-5 py-2 hover:bg-indigo-50" on:click={navigateToDividendListPage}>
+      <p class="text-sm md:text-base whitespace-nowrap">배당내역 관리</p>
     </li>
-    <li class="text-sm md:text-base px-5 py-2 hover:bg-indigo-50" on:click={signOutAndNavigateToHome}>로그아웃</li>
+    <li class="px-5 py-2 hover:bg-indigo-50" on:click={signOutAndNavigateToHome}>
+      <p class="text-sm md:text-base">로그아웃</p>
+    </li>
   </ul>
 {/if}

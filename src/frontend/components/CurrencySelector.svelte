@@ -6,6 +6,7 @@
 
   import { slide } from "svelte/transition";
   import clickOutside from "~/frontend/actions/clickOutside";
+  import safariOverflowHidden from "~/frontend/actions/safariOverflowHidden";
 
   const items = [
     {
@@ -51,13 +52,12 @@
   {#if showOptions}
     <div
       class={`currency-menu absolute w-max top-9 ${menuAlign}-0 z-10 shadow-md bg-white border border-gray-300 rounded-sm cursor-pointer`}
-      transition:slide>
+      transition:slide
+      use:safariOverflowHidden>
       <ul>
         {#each items as item, idx}
-          <li
-            class="text-sm md:text-base text-center px-2.5 py-1.5 hover:bg-indigo-50"
-            on:click={() => onSelectOption(idx)}>
-            {item.label}
+          <li class="text-center px-2.5 py-1.5 hover:bg-indigo-50" on:click={() => onSelectOption(idx)}>
+            <p class="text-sm md:text-base whitespace-nowrap">{item.label}</p>
           </li>
         {/each}
       </ul>
