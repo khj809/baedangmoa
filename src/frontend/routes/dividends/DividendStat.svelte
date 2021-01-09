@@ -40,6 +40,17 @@
         }, {})
       : null;
 
+  let totalRevenue: string | number = 0;
+  $: if (!!convertedExchangeRates) {
+    totalRevenue = dividends
+      .reduce((acc, div: dividendFragment) => {
+        return (
+          acc + (showPosttax ? div.amount_posttax : div.amount_pretax) / convertedExchangeRates[div.currency.symbol]
+        );
+      }, 0)
+      .toFixed(2);
+  }
+
   type ChartType = "Monthly" | "Stockwise";
   let currentChartType: ChartType = "Monthly";
 
@@ -74,7 +85,6 @@
       };
     });
   }
-  $: totalRevenue = lineChartData.reduce((acc, data) => acc + data.value, 0).toFixed(2);
 
   $: lineChartOption = {
     animations: true,
