@@ -1,6 +1,7 @@
 fragment dividend on Dividend {
   id
   company {
+    id
     ticker
     name
     exchange
@@ -23,6 +24,7 @@ query GetDividends($userId: String!) @cached(ttl: 300) {
 
 mutation CreateDividend($dividend: Dividend_insert_input!, $company: Company_insert_input!) {
   insert_Company_one(object: $company, on_conflict: { constraint: Company_pkey, update_columns: [] }) {
+    id
     ticker
     name
     exchange

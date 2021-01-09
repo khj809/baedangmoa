@@ -11,7 +11,7 @@
     }
     const result = await axios.get("/api/symbol_search", {
       params: {
-        text: keyword,
+        keyword,
       },
     });
     return result.data;

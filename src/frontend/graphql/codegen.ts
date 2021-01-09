@@ -22,6 +22,7 @@ export type Company = {
   __typename?: 'Company';
   country: Scalars['String'];
   exchange: Scalars['String'];
+  id: Scalars['Int'];
   name: Scalars['String'];
   ticker: Scalars['String'];
 };
@@ -36,9 +37,17 @@ export type Company_aggregate = {
 /** aggregate fields of "Company" */
 export type Company_aggregate_fields = {
   __typename?: 'Company_aggregate_fields';
+  avg?: Maybe<Company_avg_fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Company_max_fields>;
   min?: Maybe<Company_min_fields>;
+  stddev?: Maybe<Company_stddev_fields>;
+  stddev_pop?: Maybe<Company_stddev_pop_fields>;
+  stddev_samp?: Maybe<Company_stddev_samp_fields>;
+  sum?: Maybe<Company_sum_fields>;
+  var_pop?: Maybe<Company_var_pop_fields>;
+  var_samp?: Maybe<Company_var_samp_fields>;
+  variance?: Maybe<Company_variance_fields>;
 };
 
 
@@ -50,15 +59,34 @@ export type Company_aggregate_fieldscountArgs = {
 
 /** order by aggregate values of table "Company" */
 export type Company_aggregate_order_by = {
+  avg?: Maybe<Company_avg_order_by>;
   count?: Maybe<order_by>;
   max?: Maybe<Company_max_order_by>;
   min?: Maybe<Company_min_order_by>;
+  stddev?: Maybe<Company_stddev_order_by>;
+  stddev_pop?: Maybe<Company_stddev_pop_order_by>;
+  stddev_samp?: Maybe<Company_stddev_samp_order_by>;
+  sum?: Maybe<Company_sum_order_by>;
+  var_pop?: Maybe<Company_var_pop_order_by>;
+  var_samp?: Maybe<Company_var_samp_order_by>;
+  variance?: Maybe<Company_variance_order_by>;
 };
 
 /** input type for inserting array relation for remote table "Company" */
 export type Company_arr_rel_insert_input = {
   data: Array<Company_insert_input>;
   on_conflict?: Maybe<Company_on_conflict>;
+};
+
+/** aggregate avg on columns */
+export type Company_avg_fields = {
+  __typename?: 'Company_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "Company" */
+export type Company_avg_order_by = {
+  id?: Maybe<order_by>;
 };
 
 /** Boolean expression to filter rows from the table "Company". All fields are combined with a logical 'AND'. */
@@ -68,6 +96,7 @@ export type Company_bool_exp = {
   _or?: Maybe<Array<Maybe<Company_bool_exp>>>;
   country?: Maybe<String_comparison_exp>;
   exchange?: Maybe<String_comparison_exp>;
+  id?: Maybe<Int_comparison_exp>;
   name?: Maybe<String_comparison_exp>;
   ticker?: Maybe<String_comparison_exp>;
 };
@@ -75,13 +104,21 @@ export type Company_bool_exp = {
 /** unique or primary key constraints on table "Company" */
 export enum Company_constraint {
   /** unique or primary key constraint */
+  Company_id_key = 'Company_id_key',
+  /** unique or primary key constraint */
   Company_pkey = 'Company_pkey'
 }
+
+/** input type for incrementing integer column in table "Company" */
+export type Company_inc_input = {
+  id?: Maybe<Scalars['Int']>;
+};
 
 /** input type for inserting data into table "Company" */
 export type Company_insert_input = {
   country?: Maybe<Scalars['String']>;
   exchange?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   ticker?: Maybe<Scalars['String']>;
 };
@@ -91,6 +128,7 @@ export type Company_max_fields = {
   __typename?: 'Company_max_fields';
   country?: Maybe<Scalars['String']>;
   exchange?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   ticker?: Maybe<Scalars['String']>;
 };
@@ -99,6 +137,7 @@ export type Company_max_fields = {
 export type Company_max_order_by = {
   country?: Maybe<order_by>;
   exchange?: Maybe<order_by>;
+  id?: Maybe<order_by>;
   name?: Maybe<order_by>;
   ticker?: Maybe<order_by>;
 };
@@ -108,6 +147,7 @@ export type Company_min_fields = {
   __typename?: 'Company_min_fields';
   country?: Maybe<Scalars['String']>;
   exchange?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   ticker?: Maybe<Scalars['String']>;
 };
@@ -116,6 +156,7 @@ export type Company_min_fields = {
 export type Company_min_order_by = {
   country?: Maybe<order_by>;
   exchange?: Maybe<order_by>;
+  id?: Maybe<order_by>;
   name?: Maybe<order_by>;
   ticker?: Maybe<order_by>;
 };
@@ -146,6 +187,7 @@ export type Company_on_conflict = {
 export type Company_order_by = {
   country?: Maybe<order_by>;
   exchange?: Maybe<order_by>;
+  id?: Maybe<order_by>;
   name?: Maybe<order_by>;
   ticker?: Maybe<order_by>;
 };
@@ -162,6 +204,8 @@ export enum Company_select_column {
   /** column name */
   exchange = 'exchange',
   /** column name */
+  id = 'id',
+  /** column name */
   name = 'name',
   /** column name */
   ticker = 'ticker'
@@ -171,8 +215,53 @@ export enum Company_select_column {
 export type Company_set_input = {
   country?: Maybe<Scalars['String']>;
   exchange?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   ticker?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Company_stddev_fields = {
+  __typename?: 'Company_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "Company" */
+export type Company_stddev_order_by = {
+  id?: Maybe<order_by>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Company_stddev_pop_fields = {
+  __typename?: 'Company_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "Company" */
+export type Company_stddev_pop_order_by = {
+  id?: Maybe<order_by>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Company_stddev_samp_fields = {
+  __typename?: 'Company_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "Company" */
+export type Company_stddev_samp_order_by = {
+  id?: Maybe<order_by>;
+};
+
+/** aggregate sum on columns */
+export type Company_sum_fields = {
+  __typename?: 'Company_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "Company" */
+export type Company_sum_order_by = {
+  id?: Maybe<order_by>;
 };
 
 /** update columns of table "Company" */
@@ -182,10 +271,45 @@ export enum Company_update_column {
   /** column name */
   exchange = 'exchange',
   /** column name */
+  id = 'id',
+  /** column name */
   name = 'name',
   /** column name */
   ticker = 'ticker'
 }
+
+/** aggregate var_pop on columns */
+export type Company_var_pop_fields = {
+  __typename?: 'Company_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "Company" */
+export type Company_var_pop_order_by = {
+  id?: Maybe<order_by>;
+};
+
+/** aggregate var_samp on columns */
+export type Company_var_samp_fields = {
+  __typename?: 'Company_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "Company" */
+export type Company_var_samp_order_by = {
+  id?: Maybe<order_by>;
+};
+
+/** aggregate variance on columns */
+export type Company_variance_fields = {
+  __typename?: 'Company_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "Company" */
+export type Company_variance_order_by = {
+  id?: Maybe<order_by>;
+};
 
 /** columns and relationships of "Currency" */
 export type Currency = {
@@ -338,7 +462,7 @@ export type Dividend = {
   amount_pretax: Scalars['numeric'];
   /** An object relationship */
   company?: Maybe<Company>;
-  company_ticker: Scalars['String'];
+  company_id?: Maybe<Scalars['Int']>;
   /** An object relationship */
   currency?: Maybe<Currency>;
   currency_symbol: Scalars['String'];
@@ -403,12 +527,14 @@ export type Dividend_avg_fields = {
   __typename?: 'Dividend_avg_fields';
   amount_posttax?: Maybe<Scalars['Float']>;
   amount_pretax?: Maybe<Scalars['Float']>;
+  company_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "Dividend" */
 export type Dividend_avg_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
 };
 
 /** Boolean expression to filter rows from the table "Dividend". All fields are combined with a logical 'AND'. */
@@ -419,7 +545,7 @@ export type Dividend_bool_exp = {
   amount_posttax?: Maybe<numeric_comparison_exp>;
   amount_pretax?: Maybe<numeric_comparison_exp>;
   company?: Maybe<Company_bool_exp>;
-  company_ticker?: Maybe<String_comparison_exp>;
+  company_id?: Maybe<Int_comparison_exp>;
   currency?: Maybe<Currency_bool_exp>;
   currency_symbol?: Maybe<String_comparison_exp>;
   date?: Maybe<date_comparison_exp>;
@@ -437,6 +563,7 @@ export enum Dividend_constraint {
 export type Dividend_inc_input = {
   amount_posttax?: Maybe<Scalars['numeric']>;
   amount_pretax?: Maybe<Scalars['numeric']>;
+  company_id?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "Dividend" */
@@ -444,7 +571,7 @@ export type Dividend_insert_input = {
   amount_posttax?: Maybe<Scalars['numeric']>;
   amount_pretax?: Maybe<Scalars['numeric']>;
   company?: Maybe<Company_obj_rel_insert_input>;
-  company_ticker?: Maybe<Scalars['String']>;
+  company_id?: Maybe<Scalars['Int']>;
   currency?: Maybe<Currency_obj_rel_insert_input>;
   currency_symbol?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['date']>;
@@ -457,7 +584,7 @@ export type Dividend_max_fields = {
   __typename?: 'Dividend_max_fields';
   amount_posttax?: Maybe<Scalars['numeric']>;
   amount_pretax?: Maybe<Scalars['numeric']>;
-  company_ticker?: Maybe<Scalars['String']>;
+  company_id?: Maybe<Scalars['Int']>;
   currency_symbol?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['uuid']>;
@@ -468,7 +595,7 @@ export type Dividend_max_fields = {
 export type Dividend_max_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
-  company_ticker?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
   currency_symbol?: Maybe<order_by>;
   date?: Maybe<order_by>;
   id?: Maybe<order_by>;
@@ -480,7 +607,7 @@ export type Dividend_min_fields = {
   __typename?: 'Dividend_min_fields';
   amount_posttax?: Maybe<Scalars['numeric']>;
   amount_pretax?: Maybe<Scalars['numeric']>;
-  company_ticker?: Maybe<Scalars['String']>;
+  company_id?: Maybe<Scalars['Int']>;
   currency_symbol?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['uuid']>;
@@ -491,7 +618,7 @@ export type Dividend_min_fields = {
 export type Dividend_min_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
-  company_ticker?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
   currency_symbol?: Maybe<order_by>;
   date?: Maybe<order_by>;
   id?: Maybe<order_by>;
@@ -525,7 +652,7 @@ export type Dividend_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
   company?: Maybe<Company_order_by>;
-  company_ticker?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
   currency?: Maybe<Currency_order_by>;
   currency_symbol?: Maybe<order_by>;
   date?: Maybe<order_by>;
@@ -545,7 +672,7 @@ export enum Dividend_select_column {
   /** column name */
   amount_pretax = 'amount_pretax',
   /** column name */
-  company_ticker = 'company_ticker',
+  company_id = 'company_id',
   /** column name */
   currency_symbol = 'currency_symbol',
   /** column name */
@@ -560,7 +687,7 @@ export enum Dividend_select_column {
 export type Dividend_set_input = {
   amount_posttax?: Maybe<Scalars['numeric']>;
   amount_pretax?: Maybe<Scalars['numeric']>;
-  company_ticker?: Maybe<Scalars['String']>;
+  company_id?: Maybe<Scalars['Int']>;
   currency_symbol?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['uuid']>;
@@ -572,12 +699,14 @@ export type Dividend_stddev_fields = {
   __typename?: 'Dividend_stddev_fields';
   amount_posttax?: Maybe<Scalars['Float']>;
   amount_pretax?: Maybe<Scalars['Float']>;
+  company_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "Dividend" */
 export type Dividend_stddev_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -585,12 +714,14 @@ export type Dividend_stddev_pop_fields = {
   __typename?: 'Dividend_stddev_pop_fields';
   amount_posttax?: Maybe<Scalars['Float']>;
   amount_pretax?: Maybe<Scalars['Float']>;
+  company_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "Dividend" */
 export type Dividend_stddev_pop_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -598,12 +729,14 @@ export type Dividend_stddev_samp_fields = {
   __typename?: 'Dividend_stddev_samp_fields';
   amount_posttax?: Maybe<Scalars['Float']>;
   amount_pretax?: Maybe<Scalars['Float']>;
+  company_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "Dividend" */
 export type Dividend_stddev_samp_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
 };
 
 /** aggregate sum on columns */
@@ -611,12 +744,14 @@ export type Dividend_sum_fields = {
   __typename?: 'Dividend_sum_fields';
   amount_posttax?: Maybe<Scalars['numeric']>;
   amount_pretax?: Maybe<Scalars['numeric']>;
+  company_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "Dividend" */
 export type Dividend_sum_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
 };
 
 /** update columns of table "Dividend" */
@@ -626,7 +761,7 @@ export enum Dividend_update_column {
   /** column name */
   amount_pretax = 'amount_pretax',
   /** column name */
-  company_ticker = 'company_ticker',
+  company_id = 'company_id',
   /** column name */
   currency_symbol = 'currency_symbol',
   /** column name */
@@ -642,12 +777,14 @@ export type Dividend_var_pop_fields = {
   __typename?: 'Dividend_var_pop_fields';
   amount_posttax?: Maybe<Scalars['Float']>;
   amount_pretax?: Maybe<Scalars['Float']>;
+  company_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "Dividend" */
 export type Dividend_var_pop_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
 };
 
 /** aggregate var_samp on columns */
@@ -655,12 +792,14 @@ export type Dividend_var_samp_fields = {
   __typename?: 'Dividend_var_samp_fields';
   amount_posttax?: Maybe<Scalars['Float']>;
   amount_pretax?: Maybe<Scalars['Float']>;
+  company_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "Dividend" */
 export type Dividend_var_samp_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
 };
 
 /** aggregate variance on columns */
@@ -668,12 +807,27 @@ export type Dividend_variance_fields = {
   __typename?: 'Dividend_variance_fields';
   amount_posttax?: Maybe<Scalars['Float']>;
   amount_pretax?: Maybe<Scalars['Float']>;
+  company_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "Dividend" */
 export type Dividend_variance_order_by = {
   amount_posttax?: Maybe<order_by>;
   amount_pretax?: Maybe<order_by>;
+  company_id?: Maybe<order_by>;
+};
+
+/** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
+export type Int_comparison_exp = {
+  _eq?: Maybe<Scalars['Int']>;
+  _gt?: Maybe<Scalars['Int']>;
+  _gte?: Maybe<Scalars['Int']>;
+  _in?: Maybe<Array<Scalars['Int']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Int']>;
+  _lte?: Maybe<Scalars['Int']>;
+  _neq?: Maybe<Scalars['Int']>;
+  _nin?: Maybe<Array<Scalars['Int']>>;
 };
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
@@ -831,6 +985,7 @@ export type mutation_rootinsert_Dividend_oneArgs = {
 
 /** mutation root */
 export type mutation_rootupdate_CompanyArgs = {
+  _inc?: Maybe<Company_inc_input>;
   _set?: Maybe<Company_set_input>;
   where: Company_bool_exp;
 };
@@ -838,6 +993,7 @@ export type mutation_rootupdate_CompanyArgs = {
 
 /** mutation root */
 export type mutation_rootupdate_Company_by_pkArgs = {
+  _inc?: Maybe<Company_inc_input>;
   _set?: Maybe<Company_set_input>;
   pk_columns: Company_pk_columns_input;
 };
@@ -1123,7 +1279,7 @@ export type dividendFragment = (
   & Pick<Dividend, 'id' | 'amount_pretax' | 'amount_posttax' | 'date'>
   & { company?: Maybe<(
     { __typename?: 'Company' }
-    & Pick<Company, 'ticker' | 'name' | 'exchange' | 'country'>
+    & Pick<Company, 'id' | 'ticker' | 'name' | 'exchange' | 'country'>
   )>, currency?: Maybe<(
     { __typename?: 'Currency' }
     & Pick<Currency, 'symbol' | 'name'>
@@ -1153,7 +1309,7 @@ export type CreateDividendMutation = (
   { __typename?: 'mutation_root' }
   & { insert_Company_one?: Maybe<(
     { __typename?: 'Company' }
-    & Pick<Company, 'ticker' | 'name' | 'exchange' | 'country'>
+    & Pick<Company, 'id' | 'ticker' | 'name' | 'exchange' | 'country'>
   )>, insert_Dividend_one?: Maybe<(
     { __typename?: 'Dividend' }
     & dividendFragment
@@ -1191,6 +1347,7 @@ export const DividendFragmentDoc = gql`
     fragment dividend on Dividend {
   id
   company {
+    id
     ticker
     name
     exchange
@@ -1218,6 +1375,7 @@ export const CreateDividendDoc = gql`
     object: $company
     on_conflict: {constraint: Company_pkey, update_columns: []}
   ) {
+    id
     ticker
     name
     exchange

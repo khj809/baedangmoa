@@ -25,7 +25,7 @@
   $: {
     editButtonDisabled =
       !(
-        selectedCompany.ticker !== dividend.company.ticker ||
+        selectedCompany.id !== dividend.company.id ||
         selectedCurrency !== dividend.currency.symbol ||
         amountPretax !== dividend.amount_pretax ||
         amountPosttax !== dividend.amount_posttax ||
@@ -39,7 +39,7 @@
       variables: {
         id: dividend.id,
         set: {
-          company_ticker: selectedCompany.ticker,
+          company_id: selectedCompany.id,
           currency_symbol: selectedCurrency,
           amount_pretax: amountPretax,
           amount_posttax: amountPosttax,

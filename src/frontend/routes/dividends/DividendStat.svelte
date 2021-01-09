@@ -77,13 +77,15 @@
       }
       return acc;
     }, {});
-    lineChartData = Object.entries(monthlyDividend).map(([month, val]) => {
-      return {
-        group: "배당액",
-        date: month,
-        value: showPosttax ? val.amountPosttax : val.amountPretax,
-      };
-    });
+    lineChartData = Object.entries(monthlyDividend)
+      .map(([month, val]) => {
+        return {
+          group: "배당액",
+          date: month,
+          value: showPosttax ? val.amountPosttax : val.amountPretax,
+        };
+      })
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
   }
 
   $: lineChartOption = {

@@ -26,7 +26,7 @@
     const result = await _createDividend({
       variables: {
         dividend: {
-          company_ticker: selectedCompany.ticker,
+          company_id: selectedCompany.id,
           currency_symbol: selectedCurrency,
           amount_pretax: amountPretax,
           amount_posttax: amountPosttax,
