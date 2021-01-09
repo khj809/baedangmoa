@@ -13,6 +13,8 @@
 
 <script lang="ts">
   import { setContext } from "svelte";
+  import { scale } from "svelte/transition";
+  import { cubicInOut } from "svelte/easing";
 
   const toVoid = () => {};
 
@@ -63,7 +65,8 @@
       on:introstart={onOpen}
       on:outrostart={onClose}
       on:introend={onOpened}
-      on:outroend={onClosed}>
+      on:outroend={onClosed}
+      transition:scale={{ duration: 300, easing: cubicInOut }}>
       <button on:click={() => close()} class="absolute top-4 right-4 z-10">
         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

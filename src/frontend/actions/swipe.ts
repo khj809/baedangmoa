@@ -1,4 +1,4 @@
-export function swipe(node: HTMLElement) {
+export default function swipe(node: HTMLElement) {
   let x = 0;
   let y = 0;
   let dx = 0;

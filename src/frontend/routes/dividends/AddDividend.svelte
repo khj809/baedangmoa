@@ -1,7 +1,5 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { scale } from "svelte/transition";
-  import { cubicInOut } from "svelte/easing";
   import dayjs from "dayjs";
 
   import { CreateDividend, GetDividendsDoc } from "~/frontend/graphql/codegen";
@@ -70,7 +68,7 @@
   }
 </style>
 
-<div transition:scale={{ duration: 300, easing: cubicInOut }}>
+<div>
   <h2 class="relative text-xl text-center py-4 border-b border-gray-300">새 배당 추가</h2>
 
   <form on:submit|preventDefault={onSubmit} class="mt-12 px-4 md:px-8">

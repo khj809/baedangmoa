@@ -3,7 +3,8 @@
   import { slide } from "svelte/transition";
 
   import { authState } from "~/frontend/stores/auth";
-  import { swipe } from "~/frontend/actions/swipe";
+  import swipe from "~/frontend/actions/swipe";
+  import safariOverflowHidden from "~/frontend/actions/safariOverflowHidden";
   import { GetDividends, GetDividendsDoc, DeleteDividend } from "~/frontend/graphql/codegen";
   import type { GetDividendsQuery, dividendFragment } from "~/frontend/graphql/codegen";
   import Header from "~/frontend/components/Header.svelte";
@@ -224,7 +225,7 @@
           {#if curFocusedDiv === dividend.id}
             <tr>
               <td colspan={4} class="p-0">
-                <div class="flex" transition:slide={{ duration: 300 }}>
+                <div class="flex" transition:slide={{ duration: 300 }} use:safariOverflowHidden>
                   <button
                     class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-blue-100 hover:bg-blue-200"
                     on:click={() => onEditDividend(dividend)}>
