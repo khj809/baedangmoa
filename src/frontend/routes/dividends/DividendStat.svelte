@@ -77,15 +77,24 @@
       }
       return acc;
     }, {});
-    lineChartData = Object.entries(monthlyDividend)
+    const monthlyDividendData = Object.entries(monthlyDividend)
       .map(([month, val]) => {
         return {
-          group: "배당액",
+          group: "월별 배당액",
           date: month,
           value: showPosttax ? val.amountPosttax : val.amountPretax,
         };
       })
-      .sort((a, b) => (a.date < b.date ? 1 : -1));
+      .sort((a, b) => (a.date > b.date ? 1 : -1));
+    const cumulativeMonthlyDividendData = monthlyDividendData.reduce((acc, cur) => {
+      acc.push({
+        group: "월별 누적 배당액",
+        date: cur.date,
+        value: (acc.length ? acc[acc.length - 1].value : 0) + cur.value,
+      });
+      return acc;
+    }, []);
+    lineChartData = monthlyDividendData.concat(cumulativeMonthlyDividendData);
   }
 
   $: lineChartOption = {
@@ -96,16 +105,16 @@
     },
     color: {
       scale: {
-        배당액: "#4338ca",
+        "월별 배당액": "#4338ca",
+        "월별 누적 배당액": "#deb84e",
       },
     },
-    // curve: "curveMonotoneX",
-    height: "35vh",
+    height: "40vh",
     timeScale: {
       timeIntervalFormats: { monthly: { primary: "MMM yyyy", secondary: "MMM" } },
     },
     legend: {
-      enabled: false,
+      alignment: "center",
     },
   };
 
