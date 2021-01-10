@@ -295,7 +295,7 @@
       <div class="flex justify-between mt-5 px-2 md:px-8">
         <div class="flex flex-col">
           <p class="text-xs md:text-base">페이지당 표시 수</p>
-          <select class="border-b" bind:value={itemsPerPage}>
+          <select class="border-b bg-white" bind:value={itemsPerPage}>
             {#each [5, 6, 7, 8, 9, 10] as value}
               <option {value}>{value}</option>
             {/each}

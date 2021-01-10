@@ -17,6 +17,10 @@
 <style>
   .navigator {
     height: 8vh;
+    top: unset !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
   }
   .focused {
     background-color: rgb(67, 56, 202);
@@ -24,7 +28,7 @@
   }
 </style>
 
-<div class="navigator fixed bottom-0 w-full flex md:hidden">
+<div class="navigator fixed transform-none w-full flex md:hidden">
   <div
     class={`w-1/3 flex flex-col justify-center items-center border-t border-r border-gray-300 bg-white text-gray-500 cursor-pointer ${pageType === 'stat' && 'focused'}`}
     on:click={() => push('/dividends')}>
