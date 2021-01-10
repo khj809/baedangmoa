@@ -17,6 +17,10 @@
     showMenu = false;
     push("/dividends/list");
   };
+  const navigateToMypage = () => {
+    showMenu = false;
+    push("/me");
+  };
 
   const signOutAndNavigateToHome = () => {
     showMenu = false;
@@ -57,6 +61,9 @@
     </li>
     <li class="px-5 py-2 hover:bg-indigo-50" on:click={navigateToDividendListPage}>
       <p class="text-sm md:text-base whitespace-nowrap">배당내역 관리</p>
+    </li>
+    <li class="px-5 py-2 hover:bg-indigo-50" on:click={navigateToMypage}>
+      <p class="text-sm md:text-base whitespace-nowrap">마이페이지</p>
     </li>
     <li class="px-5 py-2 hover:bg-indigo-50" on:click={signOutAndNavigateToHome}>
       <p class="text-sm md:text-base">로그아웃</p>

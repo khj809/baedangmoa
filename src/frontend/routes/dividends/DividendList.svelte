@@ -124,169 +124,178 @@
 </style>
 
 <Header />
-<div class="float-right mr-2 md:mr-8 mt-10 mb-4">
-  <button
-    class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold py-2 px-2 shadow-md rounded-sm bg-indigo-100 hover:bg-indigo-200"
-    on:click={onCreateDividend}>
-    <svg class="w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="rgba(79, 70, 229)">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    새 배당 추가
-  </button>
-</div>
 
 {#if !$dividendsQuery.loading}
-  {#if dividends.length > 0}
-    <table class="w-full table-fixed">
-      <colgroup>
-        <col width="35%" />
-        <col width="20%" />
-        <col width="20%" />
-        <col width="25%" />
-      </colgroup>
+  <div class="mb-24 md:mb-5">
+    <div class="flex justify-end mt-10 mb-5 px-2 md:px-8">
+      <button
+        class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold py-2 px-2 shadow-md rounded-sm bg-indigo-100 hover:bg-indigo-200"
+        on:click={onCreateDividend}>
+        <svg
+          class="w-5 mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="rgba(79, 70, 229)">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        새 배당 추가
+      </button>
+    </div>
+    {#if dividends.length > 0}
+      <table class="w-full table-fixed">
+        <colgroup>
+          <col width="35%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="25%" />
+        </colgroup>
 
-      <thead class="border-b-2 border-gray-300">
-        <tr>
-          <th class="text-left py-2 pl-2 md:pl-8">
-            <div class="inline-block align-middle cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>
-              <span class="th-width">종목</span>
-              {#if sortingField === 'company.ticker'}
-                <SortIcon order={sortingOrder} />
-              {/if}
-            </div>
-          </th>
-          <th class="text-right py-2 break-keepall">
-            <div
-              class="inline-block align-middle text-right cursor-pointer"
-              on:click={() => onSortingChanged('amount_pretax')}>
-              {#if sortingField === 'amount_pretax'}
-                <SortIcon order={sortingOrder} />
-              {/if}
-              <span class="th-width">세전<em class="hidden md:inline not-italic">배당금</em></span>
-            </div>
-          </th>
-          <th class="text-right py-2 break-keepall">
-            <div
-              class="inline-block align-middle text-right cursor-pointer"
-              on:click={() => onSortingChanged('amount_posttax')}>
-              {#if sortingField === 'amount_posttax'}
-                <SortIcon order={sortingOrder} />
-              {/if}
-              <span class="th-width">세후<em class="hidden md:inline not-italic">배당금</em></span>
-            </div>
-          </th>
-          <th class="text-right py-2 pr-2 md:pr-8 break-keepall">
-            <div class="inline-block align-middle text-right cursor-pointer" on:click={() => onSortingChanged('date')}>
-              {#if sortingField === 'date'}
-                <SortIcon order={sortingOrder} />
-              {/if}
-              <span class="th-width"><em class="hidden md:inline not-italic">배당</em>입금일</span>
-            </div>
-          </th>
-        </tr>
-      </thead>
-
-      <tbody use:swipe on:swipeend={handleSwipe}>
-        {#each sortedDividends.slice((currentPage - 1) * itemsPerPage, Math.min((currentPage - 1) * itemsPerPage + itemsPerPage, dividends.length + 1)) as dividend, idx}
-          <tr
-            class={`h-16 cursor-pointer ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
-            on:click={() => onDividendClicked(dividend)}>
-            <td class="pl-2 md:pl-8">
-              <div class="flex items-center w-full">
-                <img
-                  class="flex-shrink-0 rounded-full"
-                  width={40}
-                  alt={dividend.company.country}
-                  src={`https://s3-symbol-logo.tradingview.com/country/${dividend.company.country}.svg`} />
-                <div class="no-scrollbar text-left overflow-scroll ml-4">
-                  <p class="inline-block font-bold">{dividend.company.ticker}</p>
-                  <p class="text-xs whitespace-nowrap">{dividend.company.name}</p>
-                </div>
+        <thead class="border-b-2 border-gray-300">
+          <tr>
+            <th class="text-left py-2 pl-2 md:pl-8">
+              <div class="inline-block align-middle cursor-pointer" on:click={() => onSortingChanged('company.ticker')}>
+                <span class="th-width">종목</span>
+                {#if sortingField === 'company.ticker'}
+                  <SortIcon order={sortingOrder} />
+                {/if}
               </div>
-            </td>
-            <td class="pl-1.5">
-              <p class="text-sm md:text-base text-right font-bold no-scrollbar overflow-scroll">
-                {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_pretax)}
-              </p>
-            </td>
-            <td class="pl-1.5">
-              <p class="text-sm md:text-base text-right font-bold no-scrollbar overflow-scroll">
-                {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_posttax)}
-              </p>
-            </td>
-            <td class="text-right pl-1.5 pr-2 md:pr-8">
-              <p class="text-xs md:text-base text-right">{dividend.date}</p>
-            </td>
+            </th>
+            <th class="text-right py-2 break-keepall">
+              <div
+                class="inline-block align-middle text-right cursor-pointer"
+                on:click={() => onSortingChanged('amount_pretax')}>
+                {#if sortingField === 'amount_pretax'}
+                  <SortIcon order={sortingOrder} />
+                {/if}
+                <span class="th-width">세전<em class="hidden md:inline not-italic">배당금</em></span>
+              </div>
+            </th>
+            <th class="text-right py-2 break-keepall">
+              <div
+                class="inline-block align-middle text-right cursor-pointer"
+                on:click={() => onSortingChanged('amount_posttax')}>
+                {#if sortingField === 'amount_posttax'}
+                  <SortIcon order={sortingOrder} />
+                {/if}
+                <span class="th-width">세후<em class="hidden md:inline not-italic">배당금</em></span>
+              </div>
+            </th>
+            <th class="text-right py-2 pr-2 md:pr-8 break-keepall">
+              <div
+                class="inline-block align-middle text-right cursor-pointer"
+                on:click={() => onSortingChanged('date')}>
+                {#if sortingField === 'date'}
+                  <SortIcon order={sortingOrder} />
+                {/if}
+                <span class="th-width"><em class="hidden md:inline not-italic">배당</em>입금일</span>
+              </div>
+            </th>
           </tr>
-          {#if curFocusedDiv === dividend.id}
-            <tr>
-              <td colspan={4} class="p-0">
-                <div class="flex" transition:slide={{ duration: 300 }} use:safariOverflowHidden>
-                  <button
-                    class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-blue-100 hover:bg-blue-200"
-                    on:click={() => onEditDividend(dividend)}>
-                    <svg
-                      class="w-5 h-5 mr-2"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    <span>수정</span>
-                  </button>
-                  <button
-                    class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-red-100 hover:bg-red-200"
-                    on:click={() => deleteDividend(dividend.id)}>
-                    <svg
-                      class="w-5 h-5 mr-2"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                    <span>삭제</span>
-                  </button>
+        </thead>
+
+        <tbody use:swipe on:swipeend={handleSwipe}>
+          {#each sortedDividends.slice((currentPage - 1) * itemsPerPage, Math.min((currentPage - 1) * itemsPerPage + itemsPerPage, dividends.length + 1)) as dividend, idx}
+            <tr
+              class={`h-16 cursor-pointer ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
+              on:click={() => onDividendClicked(dividend)}>
+              <td class="pl-2 md:pl-8">
+                <div class="flex items-center w-full">
+                  <img
+                    class="flex-shrink-0 rounded-full"
+                    width={40}
+                    alt={dividend.company.country}
+                    src={`https://s3-symbol-logo.tradingview.com/country/${dividend.company.country}.svg`} />
+                  <div class="no-scrollbar text-left overflow-scroll ml-4">
+                    <p class="inline-block font-bold">{dividend.company.ticker}</p>
+                    <p class="text-xs whitespace-nowrap">{dividend.company.name}</p>
+                  </div>
                 </div>
               </td>
+              <td class="pl-1.5">
+                <p class="text-sm md:text-base text-right font-bold no-scrollbar overflow-scroll">
+                  {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_pretax)}
+                </p>
+              </td>
+              <td class="pl-1.5">
+                <p class="text-sm md:text-base text-right font-bold no-scrollbar overflow-scroll">
+                  {currencySymbolMap[dividend.currency.symbol]}{thousandSeparate(dividend.amount_posttax)}
+                </p>
+              </td>
+              <td class="text-right pl-1.5 pr-2 md:pr-8">
+                <p class="text-xs md:text-base text-right">{dividend.date}</p>
+              </td>
             </tr>
-          {/if}
-        {/each}
-      </tbody>
-    </table>
-    <div class="flex justify-center mt-10 mb-5">
-      <PageNavigator bind:currentPage {totalPages} />
-    </div>
-  {:else}
-    <div class="fixed top-0 w-screen h-screen -z-1 flex flex-col justify-center items-center">
-      <svg
-        class="text-gray-400 w-36 h-36"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <p class="text-gray-400">배당내역이 존재하지 않습니다.</p>
-    </div>
-  {/if}
+            {#if curFocusedDiv === dividend.id}
+              <tr>
+                <td colspan={4} class="p-0">
+                  <div class="flex" transition:slide={{ duration: 300 }} use:safariOverflowHidden>
+                    <button
+                      class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-blue-100 hover:bg-blue-200"
+                      on:click={() => onEditDividend(dividend)}>
+                      <svg
+                        class="w-5 h-5 mr-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      <span>수정</span>
+                    </button>
+                    <button
+                      class="flex justify-center items-center w-full py-3 text-sm md:text-base bg-red-100 hover:bg-red-200"
+                      on:click={() => deleteDividend(dividend.id)}>
+                      <svg
+                        class="w-5 h-5 mr-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      <span>삭제</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            {/if}
+          {/each}
+        </tbody>
+      </table>
+      <div class="flex justify-end mt-5 px-2 md:px-8">
+        <PageNavigator bind:currentPage {totalPages} />
+      </div>
+    {:else}
+      <div class="fixed top-0 w-screen h-screen -z-1 flex flex-col justify-center items-center">
+        <svg
+          class="text-gray-400 w-36 h-36"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-gray-400">배당내역이 존재하지 않습니다.</p>
+      </div>
+    {/if}
+  </div>
 {/if}
 
 {#if $dividendsQuery.loading}

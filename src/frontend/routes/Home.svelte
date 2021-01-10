@@ -29,7 +29,7 @@
 
 <div class="table w-full h-screen bg-gradient-to-b from-purple-200 via-blue-100 to-blue-300">
   {#if $loggedIn}
-    <div class="absolute top-4 right-4 md:right-8">
+    <div class="hidden md:block absolute top-4 right-4 md:right-8">
       <Avatar />
     </div>
   {/if}

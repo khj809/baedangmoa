@@ -19,10 +19,15 @@ export const signInWithKakao = () => {
     success: (authObj) => {
       const token = authObj.access_token;
       authState.set({ status: "authenticating" });
-      kakaoAuth({ token }).then(async (res) => {
-        const firebaseToken = res.data.firebase_token;
-        await app.auth().signInWithCustomToken(firebaseToken);
-      });
+      kakaoAuth({ token })
+        .then(async (res) => {
+          const firebaseToken = res.data.firebase_token;
+          await app.auth().signInWithCustomToken(firebaseToken);
+        })
+        .catch((err) => {
+          console.error(err);
+          authState.set({ status: "out" });
+        });
     },
     fail: (err) => {
       console.error(err);

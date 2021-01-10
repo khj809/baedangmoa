@@ -4,9 +4,10 @@
 
   import client from "~/frontend/graphql/client";
   import routes, { onConditionsFailed } from "~/frontend/routes";
-  import { authState } from "~/frontend/stores/auth";
+  import { authState, loggedIn } from "~/frontend/stores/auth";
   import Modal from "~/frontend/components/Modal.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
+  import Navigator from "~/frontend/components/Navigator.svelte";
 
   setClient(client);
 </script>
@@ -43,5 +44,8 @@
     </div>
   {:else}
     <Router {routes} restoreScrollState={true} on:conditionsFailed={onConditionsFailed} />
+    {#if $loggedIn}
+      <Navigator />
+    {/if}
   {/if}
 </Modal>

@@ -1,8 +1,8 @@
 import { replace } from "svelte-spa-router";
 import { wrap } from "svelte-spa-router/wrap";
 import Home from "./Home.svelte";
-// import Mypage from './Mypage.svelte';
 import { DividendListPage, DividendStatPage } from "./dividends";
+import Mypage from "./Mypage.svelte";
 import NotFound from "./NotFound.svelte";
 
 import { authState } from "~/frontend/stores/auth";
@@ -28,6 +28,7 @@ export const onConditionsFailed = (event) => {
 export default {
   "/dividends/list": withAuth(DividendListPage),
   "/dividends": withAuth(DividendStatPage),
+  "/me": withAuth(Mypage),
   "/": Home,
   "*": NotFound,
 };

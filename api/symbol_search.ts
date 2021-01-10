@@ -110,16 +110,17 @@ const handler = async (req, res) => {
         "X-Requested-With": "XMLHttpRequest",
       },
     });
-    console.log(result.data);
-    const data = result.data.quotes.map((item) => {
-      return {
-        id: item.pairId,
-        ticker: item.symbol,
-        name: item.name,
-        exchange: item.exchange,
-        country: investingCountries[item.flag],
-      };
-    });
+    const data = result.data.quotes
+      .filter((item) => item.pair_type === "equities" || item.pair_type === "etf")
+      .map((item) => {
+        return {
+          id: item.pairId,
+          ticker: item.symbol,
+          name: item.name,
+          exchange: item.exchange,
+          country: investingCountries[item.flag],
+        };
+      });
     res.json(data);
   } catch (err) {
     res.status(500);

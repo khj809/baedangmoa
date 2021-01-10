@@ -9,7 +9,7 @@
 
 <div class="flex items-center space-x-2 hover:bg-gray-100 p-2 box-border border-b-2 border-gray-100 cursor-pointer">
   <img
-    class="rounded-full"
+    class="flex-shrink-0 rounded-full"
     alt="country"
     src={`https://s3-symbol-logo.tradingview.com/country/${item.country}.svg`}
     width={40}
