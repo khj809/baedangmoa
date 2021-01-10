@@ -30,6 +30,16 @@
       word-break: keep-all;
     }
   }
+
+  @media all and (max-width: 768px) {
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    body {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
 </style>
 
 <Modal>

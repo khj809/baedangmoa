@@ -210,7 +210,7 @@
                     width={40}
                     alt={dividend.company.country}
                     src={`https://s3-symbol-logo.tradingview.com/country/${dividend.company.country}.svg`} />
-                  <div class="no-scrollbar text-left overflow-scroll ml-4">
+                  <div class="no-scrollbar text-left overflow-scroll ml-2">
                     <p class="inline-block font-bold">{dividend.company.ticker}</p>
                     <p class="text-xs whitespace-nowrap">{dividend.company.name}</p>
                   </div>

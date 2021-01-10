@@ -32,15 +32,22 @@
 
   .selectContainer > div:not(.spinner):not(.clearSelect) {
     left: -1px !important;
+    width: calc(100% - 2rem) !important;
+  }
+
+  .themed {
+    --spinnerColor: rgb(67, 56, 202);
   }
 </style>
 
-<Select
-  loadOptions={searchCompanies}
-  bind:selectedValue={selectedCompany}
-  optionIdentifier="ticker"
-  placeholder="종목을 선택해 주세요"
-  noOptionsMessage="검색된 종목이 없습니다"
-  {getOptionLabel}
-  {getSelectionLabel}
-  {Item} />
+<div class="themed">
+  <Select
+    loadOptions={searchCompanies}
+    bind:selectedValue={selectedCompany}
+    optionIdentifier="ticker"
+    placeholder="종목을 선택해 주세요"
+    noOptionsMessage="검색된 종목이 없습니다"
+    {getOptionLabel}
+    {getSelectionLabel}
+    {Item} />
+</div>
