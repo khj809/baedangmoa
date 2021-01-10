@@ -14,7 +14,7 @@
     src={`https://s3-symbol-logo.tradingview.com/country/${item.country}.svg`}
     width={40}
     height={40} />
-  <div class="flex flex-col w-full">
+  <div class="flex flex-col w-full overflow-x-hidden">
     <div class="flex justify-between items-center">
       <p class="font-bold">{item.ticker}</p>
       <p class="text-sm text-gray-600">{item.exchange}</p>
