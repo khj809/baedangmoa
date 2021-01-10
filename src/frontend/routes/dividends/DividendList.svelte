@@ -3,6 +3,7 @@
   import { slide } from "svelte/transition";
 
   import { authState } from "~/frontend/stores/auth";
+  import preferences from "~/frontend/stores/preferences";
   import swipe from "~/frontend/actions/swipe";
   import safariOverflowHidden from "~/frontend/actions/safariOverflowHidden";
   import { GetDividends, GetDividendsDoc, DeleteDividend } from "~/frontend/graphql/codegen";
@@ -25,14 +26,13 @@
   };
 
   let dividendsQuery = GetDividends({ userId: $authState.user?.uid });
-  $: dividends = !$dividendsQuery.loading ? $dividendsQuery.data?.Dividend : [];
+  $: originalDividends = !$dividendsQuery.loading ? $dividendsQuery.data?.Dividend : [];
+  let dividends: dividendFragment[] = [];
 
   type SortingOrder = "asc" | "desc";
   type SortingField = "company.ticker" | "amount_pretax" | "amount_posttax" | "date";
   let sortingOrder: SortingOrder = "desc";
   let sortingField: SortingField = "date";
-  let sortedDividends: dividendFragment[] = null;
-
   const onSortingChanged = (field: SortingField) => {
     if (sortingField === field) {
       if (sortingOrder === "desc") {
@@ -46,8 +46,23 @@
     }
   };
 
+  let searchKeyword = "";
+
+  let currentPage = 1;
+  let itemsPerPage = $preferences.dividend.tableItemsPerPage;
+  $: totalPages = Math.ceil(originalDividends.length / itemsPerPage);
+  $: preferences.set({ ...$preferences, dividend: { ...$preferences.dividend, tableItemsPerPage: itemsPerPage } });
+
   $: {
-    let _dividends = dividends.slice();
+    let _dividends = originalDividends.slice();
+    if (searchKeyword !== "") {
+      const searchKeywordLower = searchKeyword.toLowerCase();
+      _dividends = _dividends.filter(
+        (div) =>
+          div.company.name.toLowerCase().includes(searchKeywordLower) ||
+          div.company.ticker.toLowerCase().includes(searchKeywordLower)
+      );
+    }
     if (sortingOrder && sortingField) {
       _dividends.sort((a, b) => {
         const aValue = resolve(a, sortingField);
@@ -56,12 +71,10 @@
         return result ? 1 : -1;
       });
     }
-    sortedDividends = _dividends;
-  }
 
-  let currentPage = 1;
-  let itemsPerPage = 10;
-  $: totalPages = Math.ceil(dividends.length / itemsPerPage);
+    totalPages = Math.ceil(_dividends.length / itemsPerPage);
+    dividends = _dividends;
+  }
 
   let curFocusedDiv = null;
 
@@ -126,8 +139,12 @@
 <Header />
 
 {#if !$dividendsQuery.loading}
-  <div class="mb-24 md:mb-5 pt-5">
-    <div class="flex justify-end mb-5 px-2 md:px-8">
+  <div class="mb-24 md:mb-5 pt-10">
+    <div class="flex justify-between mb-5 px-2 md:px-8">
+      <input
+        class="w-1/2 px-2 border border-gray-300"
+        bind:value={searchKeyword}
+        placeholder="종목명/회사명 으로 검색" />
       <button
         class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold py-2 px-2 shadow-md rounded-sm bg-indigo-100 hover:bg-indigo-200"
         on:click={onCreateDividend}>
@@ -199,7 +216,7 @@
         </thead>
 
         <tbody use:swipe on:swipeend={handleSwipe}>
-          {#each sortedDividends.slice((currentPage - 1) * itemsPerPage, Math.min((currentPage - 1) * itemsPerPage + itemsPerPage, dividends.length + 1)) as dividend, idx}
+          {#each dividends.slice((currentPage - 1) * itemsPerPage, Math.min((currentPage - 1) * itemsPerPage + itemsPerPage, originalDividends.length + 1)) as dividend, idx}
             <tr
               class={`h-16 cursor-pointer ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
               on:click={() => onDividendClicked(dividend)}>
@@ -275,7 +292,15 @@
           {/each}
         </tbody>
       </table>
-      <div class="flex justify-end mt-5 px-2 md:px-8">
+      <div class="flex justify-between mt-5 px-2 md:px-8">
+        <div class="flex flex-col">
+          <p class="text-xs md:text-base">페이지당 표시 수</p>
+          <select class="border-b" bind:value={itemsPerPage}>
+            {#each [5, 6, 7, 8, 9, 10] as value}
+              <option {value}>{value}</option>
+            {/each}
+          </select>
+        </div>
         <PageNavigator bind:currentPage {totalPages} />
       </div>
     {:else}
