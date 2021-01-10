@@ -126,8 +126,8 @@
 <Header />
 
 {#if !$dividendsQuery.loading}
-  <div class="mb-24 md:mb-5">
-    <div class="flex justify-end mt-10 mb-5 px-2 md:px-8">
+  <div class="mb-24 md:mb-5 pt-5">
+    <div class="flex justify-end mb-5 px-2 md:px-8">
       <button
         class="icon-add flex items-center text-sm md:text-base text-indigo-700 font-bold py-2 px-2 shadow-md rounded-sm bg-indigo-100 hover:bg-indigo-200"
         on:click={onCreateDividend}>

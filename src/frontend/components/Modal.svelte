@@ -56,11 +56,11 @@
 
 {#if Component}
   <div
-    class="fixed z-10 flex flex-col justify-center w-full h-full bg-black bg-opacity-60"
+    class="fixed z-10 flex justify-center w-screen h-screen bg-black bg-opacity-60"
     bind:this={background}
     on:click={handleOuterClick}>
     <div
-      class="relative w-full md:max-w-xl h-screen md:max-h-full mx-auto bg-white overflow-scroll"
+      class="relative w-full md:max-w-xl h-screen md:max-h-full mx-auto bg-white overflow-y-scroll"
       bind:this={modalWindow}
       on:introstart={onOpen}
       on:outrostart={onClose}
