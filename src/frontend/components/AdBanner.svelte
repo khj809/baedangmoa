@@ -12,6 +12,11 @@
   }
 </style>
 
+<svelte:head>
+  <script type="text/javascript" src="https://t1.daumcdn.net/kas/static/ba.min.js" async>
+  </script>
+</svelte:head>
+
 <div>
   <ins
     class="kakao_ad_area"
@@ -19,6 +24,4 @@
     data-ad-unit="DAN-5t6kkfw4arPDVglV"
     data-ad-width="320"
     data-ad-height="50" />
-  <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async>
-  </script>
 </div>
