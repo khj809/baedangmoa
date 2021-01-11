@@ -180,7 +180,7 @@
     <div class="mx-auto text-center text-gray-500 font-semibold mt-6">배당 목록을 조회하고 있습니다.</div>
   </div>
 {:else}
-  <div class="px-4 md:px-8 mt-10 mb-24 md:mb-5">
+  <div class="px-4 md:px-8 pt-14 pb-24 md:pb-5">
     <div class="w-full flex justify-between items-center">
       <p class="text-base mb-2">총 배당수익 <span class="text-gray-500">(환율적용 합산)</span></p>
       <div class="flex items-center space-x-2">

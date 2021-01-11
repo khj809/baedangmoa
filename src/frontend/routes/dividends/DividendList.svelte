@@ -139,7 +139,7 @@
 <Header />
 
 {#if !$dividendsQuery.loading}
-  <div class="mb-24 md:mb-5 pt-10">
+  <div class="pb-24 md:pb-5 pt-14">
     <div class="flex justify-between mb-5 px-2 md:px-8">
       <input
         class="w-1/2 px-2 border border-gray-300"

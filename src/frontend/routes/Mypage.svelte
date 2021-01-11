@@ -31,7 +31,7 @@
 
 <Header />
 {#if $loggedIn}
-  <div class="mt-10 mx-8 h-full flex flex-col">
+  <div class="pt-14 mx-8 h-full flex flex-col">
     <div class="flex justify-center"><img class="rounded-full w-32 h-32" alt="avatar" src={photoURL} /></div>
     <div class="flex flex-col mt-5">
       <label for="displayName">닉네임</label>
