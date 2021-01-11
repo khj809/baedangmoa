@@ -46,3 +46,16 @@ mutation DeleteDividend($id: uuid!) {
     ...dividend
   }
 }
+
+query GetDividendsCount @cached(ttl: 300) {
+  num_dividends: Dividend_aggregate {
+    aggregate {
+      count
+    }
+  }
+  num_users: Dividend_aggregate {
+    aggregate {
+      count(distinct: true, columns: user_id)
+    }
+  }
+}

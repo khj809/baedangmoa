@@ -194,7 +194,7 @@ export type Company_order_by = {
 
 /** primary key columns input for table: "Company" */
 export type Company_pk_columns_input = {
-  ticker: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 /** select columns of table "Company" */
@@ -913,7 +913,7 @@ export type mutation_rootdelete_CompanyArgs = {
 
 /** mutation root */
 export type mutation_rootdelete_Company_by_pkArgs = {
-  ticker: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 
@@ -1104,7 +1104,7 @@ export type query_rootCompany_aggregateArgs = {
 
 /** query root */
 export type query_rootCompany_by_pkArgs = {
-  ticker: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 
@@ -1205,7 +1205,7 @@ export type subscription_rootCompany_aggregateArgs = {
 
 /** subscription root */
 export type subscription_rootCompany_by_pkArgs = {
-  ticker: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 
@@ -1343,6 +1343,26 @@ export type DeleteDividendMutation = (
   )> }
 );
 
+export type GetDividendsCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDividendsCountQuery = (
+  { __typename?: 'query_root' }
+  & { num_dividends: (
+    { __typename?: 'Dividend_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'Dividend_aggregate_fields' }
+      & Pick<Dividend_aggregate_fields, 'count'>
+    )> }
+  ), num_users: (
+    { __typename?: 'Dividend_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'Dividend_aggregate_fields' }
+      & Pick<Dividend_aggregate_fields, 'count'>
+    )> }
+  ) }
+);
+
 export const DividendFragmentDoc = gql`
     fragment dividend on Dividend {
   id
@@ -1400,6 +1420,20 @@ export const DeleteDividendDoc = gql`
   }
 }
     ${DividendFragmentDoc}`;
+export const GetDividendsCountDoc = gql`
+    query GetDividendsCount @cached(ttl: 300) {
+  num_dividends: Dividend_aggregate {
+    aggregate {
+      count
+    }
+  }
+  num_users: Dividend_aggregate {
+    aggregate {
+      count(distinct: true, columns: user_id)
+    }
+  }
+}
+    `;
 export const GetDividends = ( variables: GetDividendsQueryVariables ) =>
   query<GetDividendsQuery, GetDividendsQueryVariables>(GetDividendsDoc ,{
     variables
@@ -1413,3 +1447,19 @@ export const UpdateDividend = (  ) =>
 
 export const DeleteDividend = (  ) =>
   mutation<DeleteDividendMutation, DeleteDividendMutationVariables>(DeleteDividendDoc)
+
+export const GetDividendsCount = ( variables: GetDividendsCountQueryVariables ) =>
+  query<GetDividendsCountQuery, GetDividendsCountQueryVariables>(GetDividendsCountDoc ,{
+    variables
+  })
+
+          ///@ts-ignore 
+
+          export const getDividendsCount = writable<GetDividendsCountQuery>({}, (set) => {
+                      const p = GetDividendsCount({})
+                      p.subscribe((v) => {
+                        if (!v.loading && v.data) {
+                          set(v.data);
+                        }
+                      })
+                    })

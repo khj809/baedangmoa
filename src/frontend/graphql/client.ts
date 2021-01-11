@@ -20,7 +20,13 @@ const generateClient = () => {
       },
     },
   });
-  const asyncAuthLink = setContext(async () => {
+
+  // operation별로 context header를 override하는게 불가능하므로
+  // link 레벨에서 operation name에 따라 header를 분기할 용도로 만듬
+  const forceAnonymousOperations = ["GetDividendsCount"];
+
+  const asyncAuthLink = setContext(async (operation, prevContext) => {
+    if (forceAnonymousOperations.includes(operation.operationName)) return {};
     const token = await authState.get().user?.getIdToken();
     return !!token
       ? {
