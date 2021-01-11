@@ -1,13 +1,12 @@
 <style>
   .kakao_ad_area {
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    z-index: 0;
   }
   @media all and (max-width: 768px) {
     .kakao_ad_area {
-      position: absolute;
       top: 0;
-      z-index: 0;
     }
   }
 </style>

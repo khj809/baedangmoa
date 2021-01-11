@@ -1,9 +1,11 @@
 <script>
   import { push, location } from "svelte-spa-router";
 
-  type PageType = "stat" | "list" | "mypage";
+  type PageType = "home" | "stat" | "list" | "mypage";
   let pageType: PageType;
-  $: if ($location === "/dividends") {
+  $: if ($location === "/") {
+    pageType = "home";
+  } else if ($location === "/dividends") {
     pageType = "stat";
   } else if ($location === "/dividends/list") {
     pageType = "list";
@@ -29,6 +31,15 @@
 </style>
 
 <div class="navigator fixed transform-none w-full flex md:hidden">
+  <div
+    class={`w-1/3 flex flex-col justify-center items-center border-t border-r border-gray-300 bg-white text-gray-500 cursor-pointer ${pageType === 'home' && 'focused'}`}
+    on:click={() => push('/')}>
+    <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path
+        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+    </svg>
+    <p class="text-sm whitespace-nowrap">홈</p>
+  </div>
   <div
     class={`w-1/3 flex flex-col justify-center items-center border-t border-r border-gray-300 bg-white text-gray-500 cursor-pointer ${pageType === 'stat' && 'focused'}`}
     on:click={() => push('/dividends')}>
