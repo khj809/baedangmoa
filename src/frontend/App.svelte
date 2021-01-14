@@ -8,7 +8,6 @@
   import Modal from "~/frontend/components/Modal.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
   import Navigator from "~/frontend/components/Navigator.svelte";
-  import AdBanner from '~/frontend/components/AdBanner.svelte';
 
   setClient(client);
 </script>
@@ -59,5 +58,4 @@
       <Navigator />
     {/if}
   {/if}
-  <AdBanner/>
 </Modal>
