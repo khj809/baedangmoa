@@ -1,4 +1,7 @@
+const httpProxy = require("http-proxy");
+
 const production = process.env.NODE_ENV === "production";
+const proxy = httpProxy.createServer({ target: "http://localhost:5001/api" });
 
 module.exports = {
   mount: {
@@ -18,7 +21,12 @@ module.exports = {
     open: "none",
     port: 5000,
   },
-  proxy: {
-    "/api": "http://localhost:5001/api/",
-  },
+  routes: [
+    {
+      src: "/api/.*",
+      dest: (req, res) => {
+        proxy.web(req, res);
+      },
+    },
+  ],
 };
