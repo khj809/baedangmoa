@@ -1,4 +1,4 @@
-const axios = require("axios");
+var axios = require("axios");
 
 // Mapping table
 // from country names defined in investing.com (total 93)
@@ -99,7 +99,7 @@ const investingCountries = {
   Zimbabwe: "ZW",
 };
 
-const handler = async (req, res) => {
+var handler = async (req, res) => {
   try {
     const params = new URLSearchParams();
     params.append("type", "quotes");

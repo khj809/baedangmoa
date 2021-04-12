@@ -1,7 +1,7 @@
 const httpProxy = require("http-proxy");
 
 const production = process.env.NODE_ENV === "production";
-const proxy = httpProxy.createServer({ target: "http://localhost:5001/api" });
+const proxy = httpProxy.createServer({ target: "http://localhost:5001" });
 
 module.exports = {
   mount: {
@@ -28,5 +28,5 @@ module.exports = {
         proxy.web(req, res);
       },
     },
-  ],
+  ]
 };

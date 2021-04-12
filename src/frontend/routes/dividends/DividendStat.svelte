@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { LineChart, DonutChart } from "@carbon/charts-svelte";
+  import { ScaleTypes, Alignments, LegendPositions } from "@carbon/charts/interfaces";
   import axios from "axios";
   import dayjs from "dayjs";
 
@@ -20,13 +21,8 @@
 
   const getExchangeRates = async () => {
     if (!$exchangeRates) {
-      const res = await axios.get("https://api.exchangeratesapi.io/latest", {
-        params: {
-          base: "USD",
-          symbols: "USD,KRW",
-        },
-      });
-      exchangeRates.set(res.data.rates);
+      const res = await axios.get("/api/exchange_rates");
+      exchangeRates.set(res.data);
     }
   };
 
@@ -100,8 +96,8 @@
   $: lineChartOption = {
     animations: true,
     axes: {
-      bottom: { title: "연월", mapsTo: "date", scaleType: "time" },
-      left: { title: `배당액(${baseCurrencySymbol})`, mapsTo: "value", scaleType: "linear" },
+      bottom: { title: "연월", mapsTo: "date", scaleType: ScaleTypes.TIME },
+      left: { title: `배당액(${baseCurrencySymbol})`, mapsTo: "value", scaleType: ScaleTypes.LINEAR },
     },
     color: {
       scale: {
@@ -114,7 +110,7 @@
       timeIntervalFormats: { monthly: { primary: "MMM yyyy", secondary: "MMM" } },
     },
     legend: {
-      alignment: "center",
+      alignment: Alignments.CENTER,
     },
   };
 
@@ -151,14 +147,14 @@
   }
   $: donutChartOption = {
     legend: {
-      alignment: "center",
-      position: "bottom",
+      alignment: Alignments.CENTER,
+      position: LegendPositions.BOTTOM,
     },
     donut: {
       center: {
         numberFormatter: (number) => `${baseCurrencySymbol}${thousandSeparate(number.toFixed(2))}`,
       },
-      alignment: "center",
+      alignment: Alignments.CENTER,
     },
     height: "50vh",
   };
@@ -192,28 +188,34 @@
 
     <div class="flex w-full h-10 mt-10">
       <div
-        class={`flex justify-center items-center w-1/2 rounded-l-full cursor-pointer ${currentChartType === 'Monthly' ? 'bg-indigo-700 text-white' : 'border border-gray-500'}`}
+        class={`flex justify-center items-center w-1/2 rounded-l-full cursor-pointer ${
+          currentChartType === "Monthly" ? "bg-indigo-700 text-white" : "border border-gray-500"
+        }`}
         on:click={() => {
-          currentChartType = 'Monthly';
-        }}>
+          currentChartType = "Monthly";
+        }}
+      >
         <p>월별 배당금액</p>
       </div>
       <div
-        class={`flex justify-center items-center w-1/2 rounded-r-full cursor-pointer  ${currentChartType === 'Stockwise' ? 'bg-indigo-700 text-white' : 'border border-gray-500'}`}
+        class={`flex justify-center items-center w-1/2 rounded-r-full cursor-pointer  ${
+          currentChartType === "Stockwise" ? "bg-indigo-700 text-white" : "border border-gray-500"
+        }`}
         on:click={() => {
-          currentChartType = 'Stockwise';
-        }}>
+          currentChartType = "Stockwise";
+        }}
+      >
         <p>종목별 배당금액</p>
       </div>
     </div>
 
-    {#if currentChartType === 'Monthly'}
+    {#if currentChartType === "Monthly"}
       {#if lineChartData.length > 0}
         <div class="mt-8">
           <LineChart data={lineChartData} options={lineChartOption} />
         </div>
       {/if}
-    {:else if currentChartType === 'Stockwise'}
+    {:else if currentChartType === "Stockwise"}
       {#if donutChartData.length > 0}
         <div class="my-10">
           <DonutChart data={donutChartData} options={donutChartOption} />

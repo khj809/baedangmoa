@@ -11,6 +11,7 @@
   },
   "author": "Haejoon Kim",
   "license": "ISC",
+  "private": true,
   "devDependencies": {
     "@graphql-codegen/cli": "^1.21.3",
     "@graphql-codegen/typescript": "^1.21.1",
@@ -52,6 +53,7 @@
     "svelte-apollo": "^0.4.0",
     "svelte-calendar": "^2.0.4",
     "svelte-select": "^3.17.0",
-    "svelte-spa-router": "^3.1.0"
+    "svelte-spa-router": "^3.1.0",
+    "xml-js": "^1.6.11"
   }
 }
