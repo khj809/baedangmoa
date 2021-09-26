@@ -1,8 +1,14 @@
-<script>
-  import { signInWithGoogle, initKakao, signInWithKakao } from "~/frontend/auth";
+<script context="module">
+  import { signInWithGoogle, initKakao as _initKakao, signInWithKakao } from "~/frontend/auth";
   import { authState, loggedIn } from "~/frontend/stores/auth";
   import Avatar from "~/frontend/components/Avatar.svelte";
   import Loader from "~/frontend/components/Loader.svelte";
+
+  const initKakao = () => {
+    _initKakao();
+  };
+  export { initKakao };
+
   // import { GetDividendsCount } from "~/frontend/graphql/codegen";
 
   // const dividendsCountQuery = GetDividendsCount({});

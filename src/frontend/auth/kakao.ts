@@ -16,7 +16,7 @@ export const initKakao = () => {
 
 export const signInWithKakao = () => {
   window.Kakao.Auth.login({
-    success: (authObj) => {
+    success: (authObj: any) => {
       const token = authObj.access_token;
       authState.set({ status: "authenticating" });
       kakaoAuth({ token })
@@ -29,7 +29,7 @@ export const signInWithKakao = () => {
           authState.set({ status: "out" });
         });
     },
-    fail: (err) => {
+    fail: (err: any) => {
       console.error(err);
       alert(JSON.stringify(err));
     },

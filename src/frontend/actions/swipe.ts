@@ -4,13 +4,13 @@ export default function swipe(node: HTMLElement) {
   let dx = 0;
   let dy = 0;
 
-  function handleMousedown(event) {
+  function handleMousedown(event: TouchEvent | MouseEvent) {
     if (event.type.startsWith("touch")) {
-      x = event.touches[0].pageX;
-      y = event.touches[0].pageY;
+      x = (event as TouchEvent).touches[0].pageX;
+      y = (event as TouchEvent).touches[0].pageY;
     } else {
-      x = event.clientX;
-      y = event.clientY;
+      x = (event as MouseEvent).clientX;
+      y = (event as MouseEvent).clientY;
     }
 
     node.dispatchEvent(
@@ -25,21 +25,21 @@ export default function swipe(node: HTMLElement) {
     window.addEventListener("touchmove", handleMousemove);
   }
 
-  function handleMousemove(event) {
+  function handleMousemove(event: TouchEvent | MouseEvent) {
     let _x = 0;
     let _y = 0;
     if (event.type.startsWith("touch")) {
-      _x = event.touches[0].pageX;
-      _y = event.touches[0].pageY;
+      _x = (event as TouchEvent).touches[0].pageX;
+      _y = (event as TouchEvent).touches[0].pageY;
     } else {
-      _x = event.clientX;
-      _y = event.clientY;
+      _x = (event as MouseEvent).clientX;
+      _y = (event as MouseEvent).clientY;
     }
     dx = _x - x;
     dy = _y - y;
   }
 
-  function handleMouseup(event) {
+  function handleMouseup(event: MouseEvent) {
     let horizontal = null;
     let vertical = null;
     if (dx > 0) {

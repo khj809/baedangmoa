@@ -27,7 +27,7 @@ if (!firebase.apps.length) {
   app = firebase.apps[0];
 }
 
-app.auth().onAuthStateChanged(async (user) => {
+app.auth().onAuthStateChanged(async (user: firebase.User) => {
   if (user) {
     const token = await user.getIdToken();
     const idTokenResult = await user.getIdTokenResult();

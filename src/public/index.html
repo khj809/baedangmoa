@@ -1,38 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <title>배당모아</title>
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="description" content="배당모아 - 한눈에 보기 쉽게 정리하는 나만의 배당 가계부!" />
-    <meta name="theme-color" content="#4338ca" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="배당모아" />
-    <link rel="apple-touch-icon" href="/images/logo_152.png" />
+  <title>배당모아</title>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="description" content="배당모아 - 한눈에 보기 쉽게 정리하는 나만의 배당 가계부!" />
+  <meta name="theme-color" content="#4338ca" />
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="배당모아" />
+  <link rel="apple-touch-icon" href="/images/logo_152.png" />
 
-    <meta property="og:title" content="배당모아" />
-    <meta property="og:description" content="한눈에 보기 쉽게 정리하는 나만의 배당 가계부!" />
-    <meta property="og:site_name" content="배당모아" />
-    <meta property="og:image" content="https://baedangmoa.vercel.app/images/ogImage.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
 
-    <noscript>You need to enable Javascript to run this app.</noscript>
-    <!-- <link rel="stylesheet" href="/build/bundle.css" /> -->
-    <script type="module" src="/_dist_/index.js"></script>
-  </head>
+  <meta property="og:title" content="배당모아" />
+  <meta property="og:description" content="한눈에 보기 쉽게 정리하는 나만의 배당 가계부!" />
+  <meta property="og:site_name" content="배당모아" />
+  <meta property="og:image" content="https://baedangmoa.vercel.app/images/ogImage.png" />
 
-  <body>
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/service-worker.js");
-        });
-      }
-    </script>
-  </body>
+  <noscript>You need to enable Javascript to run this app.</noscript>
+  <!-- <link rel="stylesheet" href="/build/bundle.css" /> -->
+  <script type="module" src="/_dist_/index.js"></script>
+</head>
+
+<body>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js");
+      });
+    }
+  </script>
+</body>
+
 </html>

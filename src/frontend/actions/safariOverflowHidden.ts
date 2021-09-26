@@ -1,5 +1,5 @@
-export default function safariOverflowHidden(node) {
-  if (navigator.appVersion.includes("Safari")) {
+export default function safariOverflowHidden(node: { style: { overflow: string; }; }) {
+  if (navigator.userAgent.includes("Safari")) {
     node.style.overflow = "hidden";
   }
 }
